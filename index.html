@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MANLET</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0b2e13;
+  color:white;
+  overflow-x:hidden;
+}
+
+/* SPLASH */
+#splash{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:#0b2e13;
+  z-index:999;
+}
+#logo{
+  position:absolute;
+  font-size:40px;
+  font-weight:bold;
+  animation:moveLogo 3s ease forwards;
+}
+@keyframes moveLogo{
+  0%{top:50%;left:50%;transform:translate(-50%,-50%);opacity:0}
+  20%{opacity:1;}
+  60%{top:50%;left:50%;transform:translate(-50%,-50%)}
+  100%{top:15px;right:20px;left:auto;transform:none;}
+}
+
+/* LAYOUT */
+.container{display:flex}
+
+/* SIDEBAR */
+.sidebar{
+  width:200px;
+  background:#123d1a;
+  height:100vh;
+  padding:10px;
+}
+.sidebar div{
+  padding:12px;
+  cursor:pointer;
+  transition:.3s;
+}
+.sidebar div:hover{background:#1f5e2c}
+
+/* CONTENT */
+.content{flex:1;padding:15px}
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.cart{cursor:pointer;font-size:20px}
+
+/* PRODUCTS */
+.products{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+  margin-top:20px;
+}
+
+/* SLIDE */
+.slide-out{animation:slideOut .3s forwards;}
+.slide-in{animation:slideIn .3s forwards;}
+
+@keyframes slideOut{to{transform:translateX(-100%);opacity:0}}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* CARD */
+.card{
+  background:white;
+  color:black;
+  padding:10px;
+  border-radius:10px;
+}
+.card img{
+  width:100%;
+  height:120px;
+  object-fit:cover;
+  border-radius:8px;
+}
+
+.price{text-decoration:line-through;color:gray}
+.discount{color:green;font-weight:bold}
+
+button{
+  width:100%;
+  padding:8px;
+  margin-top:5px;
+  border:none;
+  background:#0b2e13;
+  color:white;
+  border-radius:5px;
+}
+
+/* DETAIL */
+#detail{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:white;
+  color:black;
+  display:none;
+  padding:20px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div id="logo">MANLET</div>
+</div>
+
+<div class="container">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div onclick="changeCategory('perfume')">Perfumes</div>
+  <div onclick="changeCategory('grocery')">Grocery</div>
+  <div onclick="changeCategory('beverages')">Beverages</div>
+  <div onclick="changeCategory('namkeen')">Namkeen</div>
+  <div onclick="changeCategory('beauty')">Beauty</div>
+  <div onclick="changeCategory('fashion')">Fashion</div>
+  <div onclick="changeCategory('electronics')">Electronics</div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+  <div class="header">
+    <h2>MANLET</h2>
+    <div class="cart" onclick="sendCart()">🛒</div>
+  </div>
+
+  <div id="products" class="products"></div>
+</div>
+
+</div>
+
+<!-- DETAIL -->
+<div id="detail"></div>
+
+<script>
+
+setTimeout(()=>{
+  document.getElementById("splash").style.display="none";
+},3000);
+
+const phone="918638618446";
+let cart=[];
+
+const data={
+  perfume:[{name:"Vokka Perfume",mrp:500,price:250,discount:"50%",img:"vokka-perfume.jpg"}],
+  grocery:[{name:"Tata Haldi",mrp:300,price:150,discount:"50%",img:"tata-haldi.jpg"}],
+  beauty:[{name:"Mamaearth Facewash",mrp:300,price:150,discount:"50%",img:"mamaearth-facewash.jpg"}],
+  fashion:[{name:"GenZ T-Shirt",mrp:500,price:150,discount:"50%",img:"genz-tshirt.jpg"}],
+  namkeen:[{name:"Aloo Bhujia",mrp:200,price:100,discount:"50%",img:"aloo-bhujia.jpg"}],
+  beverages:[{name:"Coca Cola",mrp:50,price:40,discount:"10%",img:"cocacola.jpg"}],
+  electronics:[{name:"Smart TV",mrp:13999,price:4699,discount:"67%",img:"smart-tv.jpg"}]
+};
+
+function changeCategory(cat){
+  const container=document.getElementById("products");
+  container.classList.add("slide-out");
+
+  setTimeout(()=>{
+    loadCategory(cat);
+    container.classList.remove("slide-out");
+    container.classList.add("slide-in");
+
+    setTimeout(()=>{
+      container.classList.remove("slide-in");
+    },300);
+
+  },300);
+}
+
+function loadCategory(cat){
+  const c=document.getElementById("products");
+  c.innerHTML="";
+  data[cat].forEach(p=>{
+    c.innerHTML+=`
+    <div class="card" onclick="showDetail('${p.name}',${p.mrp},${p.price},'${p.discount}')">
+      <img src="${p.img}">
+      <h3>${p.name}</h3>
+      <p class="price">₹${p.mrp}</p>
+      <p>₹${p.price}</p>
+      <p class="discount">${p.discount} OFF</p>
+    </div>`;
+  });
+}
+
+function showDetail(name,mrp,price,discount){
+  const d=document.getElementById("detail");
+  d.style.display="block";
+
+  d.innerHTML=`
+  <h2>${name}</h2>
+  <p><strike>₹${mrp}</strike></p>
+  <h3>₹${price}</h3>
+  <p style="color:green">${discount} OFF</p>
+
+  <button onclick="addToCart('${name}',${price})">Add to Cart</button>
+  <button onclick="buyNow('${name}',${price})">Buy Now</button>
+  <button onclick="closeDetail()">Back</button>`;
+}
+
+function closeDetail(){
+  document.getElementById("detail").style.display="none";
+}
+
+function addToCart(name,price){
+  let f=cart.find(p=>p.name===name);
+  if(f){f.qty++} else {cart.push({name,price,qty:1})}
+  alert("Added to cart");
+}
+
+function buyNow(name,price){
+  let msg=`🛒 *MANLET ORDER*%0AProduct: ${name}%0AQty:1%0ATotal: ₹${price}`;
+  window.open(`https://wa.me/${phone}?text=${msg}`);
+}
+
+function sendCart(){
+  if(cart.length==0){alert("Cart empty");return;}
+
+  let total=0;
+  let msg=`🛒 *MANLET FULL ORDER*%0A%0A`;
+
+  cart.forEach(p=>{
+    let sub=p.price*p.qty;
+    total+=sub;
+    msg+=`• ${p.name}%0AQty:${p.qty} | ₹${sub}%0A%0A`;
+  });
+
+  msg+=`Total Amount: ₹${total}`;
+
+  window.open(`https://wa.me/${phone}?text=${msg}`);
+}
+
+loadCategory('perfume');
+
+</script>
+
+</body>
+</html>
