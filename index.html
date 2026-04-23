@@ -1,250 +1,241 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MANLET</title>
 
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:white;
-  overflow-x:hidden;
-}
+body{margin:0;font-family:Arial;background:white}
 
 /* SPLASH */
 #splash{
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:white;
-  z-index:999;
+position:fixed;width:100%;height:100%;
+background:white;display:flex;justify-content:center;align-items:center;z-index:999;
 }
-
-#logo{
-  position:absolute;
-  width:120px;
-  animation:myntra 3s cubic-bezier(0.25,1,0.5,1) forwards;
-}
-
-@keyframes myntra{
-  0%{top:50%;left:50%;transform:translate(-50%,-50%) scale(0.5);opacity:0}
-  30%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}
-  50%{transform:translate(-50%,-50%) scale(1)}
-  70%{transform:translate(-50%,-50%) scale(1.05)}
-  100%{top:10px;left:15px;transform:scale(0.7);}
+#logo{width:130px;animation:anim 2.8s ease forwards;}
+@keyframes anim{
+0%{transform:scale(0.6);opacity:0}
+30%{opacity:1;transform:scale(1.2);filter:drop-shadow(0 0 25px #ff3f6c)}
+60%{transform:scale(1)}
+100%{transform:scale(0.7);filter:none}
 }
 
 /* HEADER */
 .header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:10px;
-  border-bottom:1px solid #eee;
+display:flex;justify-content:space-between;align-items:center;
+padding:10px;border-bottom:1px solid #eee;
 }
-.menu{font-size:22px;cursor:pointer;}
-.title{font-weight:bold;}
-.cart{font-size:20px;cursor:pointer;}
+.logoBox{display:flex;align-items:center;gap:8px}
+.logoBox img{width:28px}
+.menu{font-size:22px;cursor:pointer}
+.cart{font-size:20px;cursor:pointer}
 
 /* SIDEBAR */
 .sidebar{
-  position:fixed;
-  left:-220px;
-  top:0;
-  width:200px;
-  height:100%;
-  background:white;
-  box-shadow:2px 0 10px rgba(0,0,0,0.1);
-  transition:.3s;
-  z-index:100;
+position:fixed;left:-220px;top:0;width:200px;height:100%;
+background:#0b2e13;color:white;transition:.3s;z-index:100;
 }
-.sidebar div{
-  padding:15px;
-  border-bottom:1px solid #eee;
-  cursor:pointer;
-}
-.sidebar div.active{
-  background:#0b2e13;
-  color:white;
-}
+.sidebar div{padding:15px;border-bottom:1px solid rgba(255,255,255,0.2);cursor:pointer}
 
 /* HOME */
-.home{padding:15px;}
-.search{
-  width:100%;
-  padding:10px;
-  border-radius:8px;
-  border:1px solid #ccc;
-}
+.home{padding:15px}
+.search{width:100%;padding:10px;border-radius:8px;border:1px solid #ccc}
 
 /* PRODUCTS */
-.products{
-  padding:15px;
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:15px;
-}
-.card{
-  border:1px solid #eee;
-  border-radius:10px;
-  padding:10px;
-}
-.card img{
-  width:100%;
-  height:120px;
-  object-fit:cover;
-}
-.price{text-decoration:line-through;color:gray;}
-.discount{color:green;font-weight:bold;}
+.products{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:10px}
+.card{border:1px solid #eee;border-radius:10px;padding:10px}
+.card img{width:100%;height:120px;object-fit:cover}
+.price{text-decoration:line-through;color:gray}
+.discount{color:green}
 
-/* PAGE SLIDE */
-.page{
-  position:absolute;
-  width:100%;
-  top:0;
-  left:100%;
-  background:white;
-  min-height:100vh;
-  transition:.35s ease;
-}
-.page.active{left:0;}
+/* PAGES */
+.page{display:none;padding:15px}
+.back{font-weight:bold;margin-bottom:10px;cursor:pointer}
 
 /* DETAIL */
-#detail{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:white;
-  display:none;
-  padding:20px;
-}
+.detail img{width:100%;height:200px;object-fit:cover}
+button{width:100%;padding:10px;margin-top:8px;border:none;background:#0b2e13;color:white;border-radius:6px}
+
+/* CART */
+.cartItem{display:flex;justify-content:space-between;margin-bottom:10px}
+.qty button{padding:5px}
 </style>
 </head>
 
 <body>
 
 <!-- SPLASH -->
-<div id="splash">
-  <img id="logo" src="logo.png">
-</div>
+<div id="splash"><img id="logo" src="logo.png"></div>
 
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
-  <div onclick="openPage('perfume')">Perfumes</div>
-  <div onclick="openPage('grocery')">Grocery</div>
-  <div onclick="openPage('beverages')">Beverages</div>
-  <div onclick="openPage('namkeen')">Namkeen</div>
-  <div onclick="openPage('beauty')">Beauty</div>
-  <div onclick="openPage('fashion')">Fashion</div>
-  <div onclick="openPage('electronics')">Electronics</div>
+<div onclick="openCat('perfume')">Perfumes</div>
+<div onclick="openCat('grocery')">Grocery</div>
+<div onclick="openCat('beverages')">Beverages</div>
+<div onclick="openCat('namkeen')">Namkeen</div>
+<div onclick="openCat('beauty')">Beauty</div>
+<div onclick="openCat('fashion')">Fashion</div>
+<div onclick="openCat('electronics')">Electronics</div>
 </div>
 
 <!-- HEADER -->
 <div class="header">
-  <div class="menu" onclick="toggleMenu()">☰</div>
-  <div class="title">MANLET</div>
-  <div class="cart" onclick="sendCart()">🛒</div>
+<div class="menu" onclick="toggleMenu()">☰</div>
+<div class="logoBox"><img src="logo.png"><b>MANLET</b></div>
+<div class="cart" onclick="openCart()">🛒</div>
 </div>
 
 <!-- HOME -->
 <div class="home" id="home">
-  <input class="search" placeholder="Search products...">
+<input class="search" placeholder="Search">
+<div class="products" id="homeProducts"></div>
 </div>
 
-<!-- PRODUCT PAGE -->
-<div class="page" id="page">
-  <div class="products" id="products"></div>
+<!-- CATEGORY -->
+<div class="page" id="catPage">
+<div class="back" onclick="goHome()">⬅ Back</div>
+<div class="products" id="catProducts"></div>
 </div>
 
 <!-- DETAIL -->
+<div class="page" id="detailPage">
+<div class="back" onclick="goHome()">⬅ Back</div>
 <div id="detail"></div>
+</div>
+
+<!-- CART -->
+<div class="page" id="cartPage">
+<div class="back" onclick="goHome()">⬅ Back</div>
+<div id="cartItems"></div>
+<h3 id="total"></h3>
+<button onclick="checkout()">Buy Now</button>
+</div>
 
 <script>
 
-setTimeout(()=>{
-  document.getElementById("splash").style.display="none";
-},3000);
+setTimeout(()=>{splash.style.display="none"},2800)
 
-const phone="918638618446";
-let cart=[];
+const phone="918638618446"
+let cart=[]
 
-const data={
-  perfume:[{name:"Vokka Perfume",mrp:500,price:250,discount:"50%",img:"vokka-perfume.jpg"}],
-  grocery:[{name:"Tata Haldi",mrp:300,price:150,discount:"50%",img:"tata-haldi.jpg"}],
-  beauty:[{name:"Mamaearth Facewash",mrp:300,price:150,discount:"50%",img:"mamaearth-facewash.jpg"}],
-  fashion:[{name:"GenZ T-Shirt",mrp:500,price:150,discount:"50%",img:"genz-tshirt.jpg"}],
-  namkeen:[{name:"Aloo Bhujia",mrp:200,price:100,discount:"50%",img:"aloo-bhujia.jpg"}],
-  beverages:[{name:"Coca Cola",mrp:50,price:40,discount:"10%",img:"cocacola.jpg"}],
-  electronics:[{name:"Smart TV",mrp:13999,price:4699,discount:"67%",img:"smart-tv.jpg"}]
-};
+const data=[
+{name:"Vokka Perfume",cat:"perfume",price:250,img:"vokka-perfume.jpg"},
+{name:"Tata Haldi",cat:"grocery",price:150,img:"tata-haldi.jpg"},
+{name:"Mamaearth Facewash",cat:"beauty",price:150,img:"mamaearth-facewash.jpg"},
+{name:"GenZ T-Shirt",cat:"fashion",price:150,img:"genz-tshirt.jpg"},
+{name:"Aloo Bhujia",cat:"namkeen",price:100,img:"aloo-bhujia.jpg"},
+{name:"Coca Cola",cat:"beverages",price:40,img:"cocacola.jpg"},
+{name:"Smart TV",cat:"electronics",price:4699,img:"smart-tv.jpg"}
+]
 
 function toggleMenu(){
-  let s=document.getElementById("sidebar");
-  s.style.left = s.style.left==="0px" ? "-220px" : "0px";
+sidebar.style.left= sidebar.style.left=="0px"?"-220px":"0px"
 }
 
-function openPage(cat){
-  document.getElementById("sidebar").style.left="-220px";
-  document.getElementById("home").style.display="none";
-  let page=document.getElementById("page");
-  page.classList.add("active");
-
-  const c=document.getElementById("products");
-  c.innerHTML="";
-  data[cat].forEach(p=>{
-    c.innerHTML+=`
-    <div class="card" onclick="showDetail('${p.name}',${p.mrp},${p.price},'${p.discount}')">
-      <img src="${p.img}">
-      <h3>${p.name}</h3>
-      <p class="price">₹${p.mrp}</p>
-      <p>₹${p.price}</p>
-      <p class="discount">${p.discount} OFF</p>
-    </div>`;
-  });
+function showHome(){
+home.style.display="block"
+catPage.style.display="none"
+detailPage.style.display="none"
+cartPage.style.display="none"
 }
 
-function showDetail(name,mrp,price,discount){
-  let d=document.getElementById("detail");
-  d.style.display="block";
-  d.innerHTML=`
-  <h2>${name}</h2>
-  <p><strike>₹${mrp}</strike></p>
-  <h3>₹${price}</h3>
-  <p style="color:green">${discount} OFF</p>
-  <button onclick="addToCart('${name}',${price})">Add to Cart</button>
-  <button onclick="buyNow('${name}',${price})">Buy Now</button>
-  <button onclick="closeDetail()">Back</button>`;
+function openCat(cat){
+sidebar.style.left="-220px"
+home.style.display="none"
+catPage.style.display="block"
+catProducts.innerHTML=""
+data.filter(p=>p.cat==cat).forEach(p=>catProducts.innerHTML+=card(p))
 }
 
-function closeDetail(){
-  document.getElementById("detail").style.display="none";
+function card(p){
+return `<div class="card" onclick="openDetail('${p.name}')">
+<img src="${p.img}">
+<h4>${p.name}</h4>
+<p>₹${p.price}</p>
+</div>`
 }
 
-function addToCart(name,price){
-  let f=cart.find(p=>p.name===name);
-  if(f){f.qty++} else {cart.push({name,price,qty:1})}
-  alert("Added");
+function openDetail(name){
+home.style.display="none"
+catPage.style.display="none"
+detailPage.style.display="block"
+
+let p=data.find(x=>x.name==name)
+
+detail.innerHTML=`
+<div class="detail">
+<img src="${p.img}">
+<h2>${p.name}</h2>
+<h3>₹${p.price}</h3>
+<button onclick="buyNow('${p.name}',${p.price})">Buy Now</button>
+<button onclick="addCart('${p.name}')">Add to Cart</button>
+</div>`
 }
 
 function buyNow(name,price){
-  let msg=`🛒 MANLET ORDER%0A${name}%0A₹${price}`;
-  window.open(`https://wa.me/${phone}?text=${msg}`);
+let msg=`Order:%0A${name}%0APrice: ₹${price}`
+window.open(`https://wa.me/${phone}?text=${msg}`)
 }
 
-function sendCart(){
-  let total=0,msg="🛒 MANLET ORDER%0A";
-  cart.forEach(p=>{
-    let sub=p.price*p.qty;
-    total+=sub;
-    msg+=`${p.name} x${p.qty} = ₹${sub}%0A`;
-  });
-  msg+=`Total: ₹${total}`;
-  window.open(`https://wa.me/${phone}?text=${msg}`);
+function addCart(name){
+let f=cart.find(x=>x.name==name)
+if(f)f.qty++
+else cart.push({name,qty:1})
+alert("Added")
 }
+
+function openCart(){
+home.style.display="none"
+cartPage.style.display="block"
+catPage.style.display="none"
+detailPage.style.display="none"
+
+let t=0
+cartItems.innerHTML=""
+cart.forEach(p=>{
+let item=data.find(x=>x.name==p.name)
+let sub=item.price*p.qty
+t+=sub
+
+cartItems.innerHTML+=`
+<div class="cartItem">
+${p.name}
+<div class="qty">
+<button onclick="changeQty('${p.name}',-1)">-</button>
+${p.qty}
+<button onclick="changeQty('${p.name}',1)">+</button>
+</div>
+</div>`
+})
+
+total.innerText="Total: ₹"+t
+}
+
+function changeQty(name,v){
+let f=cart.find(x=>x.name==name)
+f.qty+=v
+if(f.qty<=0)cart=cart.filter(x=>x.name!=name)
+openCart()
+}
+
+function checkout(){
+let msg="Order:%0A"
+let t=0
+cart.forEach(p=>{
+let item=data.find(x=>x.name==p.name)
+let sub=item.price*p.qty
+t+=sub
+msg+=`${p.name} x${p.qty} = ₹${sub}%0A`
+})
+msg+=`Total: ₹${t}`
+window.open(`https://wa.me/${phone}?text=${msg}`)
+}
+
+function goHome(){showHome()}
+
+data.forEach(p=>homeProducts.innerHTML+=card(p))
+
+showHome()
 
 </script>
 
