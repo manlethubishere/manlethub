@@ -5,60 +5,168 @@
 <title>MANLET</title>
 
 <style>
-body{margin:0;font-family:Arial;background:white}
+body{
+margin:0;
+font-family:Arial;
+background:#f9f9f9;
+padding-bottom:70px;
+}
 
 /* SPLASH */
 #splash{
 position:fixed;width:100%;height:100%;
-background:white;display:flex;justify-content:center;align-items:center;z-index:999;
+background:white;display:flex;justify-content:center;align-items:center;
+z-index:999;
 }
-#logo{width:130px;animation:anim 2.8s ease forwards;}
+#logo{
+width:130px;
+animation:anim 3s ease forwards;
+}
 @keyframes anim{
 0%{transform:scale(0.6);opacity:0}
-30%{opacity:1;transform:scale(1.2);filter:drop-shadow(0 0 25px #ff3f6c)}
+30%{opacity:1;transform:scale(1.2);filter:drop-shadow(0 0 25px #22c55e)}
 60%{transform:scale(1)}
-100%{transform:scale(0.7);filter:none}
+100%{transform:scale(0.75)}
 }
 
 /* HEADER */
 .header{
-display:flex;justify-content:space-between;align-items:center;
-padding:10px;border-bottom:1px solid #eee;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:12px;
+background:white;
+border-bottom:1px solid #eee;
+position:sticky;
+top:0;
+z-index:10;
 }
-.logoBox{display:flex;align-items:center;gap:8px}
-.logoBox img{width:28px}
-.menu{font-size:22px;cursor:pointer}
-.cart{font-size:20px;cursor:pointer}
 
 /* SIDEBAR */
 .sidebar{
-position:fixed;left:-220px;top:0;width:200px;height:100%;
-background:#0b2e13;color:white;transition:.3s;z-index:100;
+position:fixed;
+left:-220px;
+top:0;
+width:200px;
+height:100%;
+background:#22c55e;
+color:white;
+transition:.3s;
+z-index:100;
 }
-.sidebar div{padding:15px;border-bottom:1px solid rgba(255,255,255,0.2);cursor:pointer}
+.sidebar div{
+padding:15px;
+border-bottom:1px solid rgba(255,255,255,0.2);
+cursor:pointer;
+}
 
-/* HOME */
-.home{padding:15px}
-.search{width:100%;padding:10px;border-radius:8px;border:1px solid #ccc}
+/* SEARCH */
+.search{
+width:90%;
+margin:10px;
+padding:10px;
+border-radius:8px;
+border:1px solid #ccc;
+}
 
 /* PRODUCTS */
-.products{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:10px}
-.card{border:1px solid #eee;border-radius:10px;padding:10px}
-.card img{width:100%;height:120px;object-fit:cover}
-.price{text-decoration:line-through;color:gray}
-.discount{color:green}
+.products{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+padding:10px;
+}
+.card{
+background:white;
+border-radius:12px;
+padding:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+transition:.2s;
+}
+.card:active{
+transform:scale(0.97);
+}
+.card img{
+width:100%;
+height:130px;
+object-fit:cover;
+border-radius:10px;
+}
 
 /* PAGES */
-.page{display:none;padding:15px}
-.back{font-weight:bold;margin-bottom:10px;cursor:pointer}
+.page{display:none;}
+.active{display:block;}
+
+.back{
+padding:10px;
+font-weight:bold;
+cursor:pointer;
+}
 
 /* DETAIL */
-.detail img{width:100%;height:200px;object-fit:cover}
-button{width:100%;padding:10px;margin-top:8px;border:none;background:#0b2e13;color:white;border-radius:6px}
+.detail img{
+width:100%;
+height:200px;
+object-fit:cover;
+border-radius:12px;
+}
+.qtyBox{
+display:flex;
+gap:10px;
+align-items:center;
+margin-top:10px;
+}
 
-/* CART */
-.cartItem{display:flex;justify-content:space-between;margin-bottom:10px}
-.qty button{padding:5px}
+/* BUTTON */
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+background:#22c55e;
+color:white;
+border-radius:8px;
+}
+
+/* FLOAT CART */
+.floatCart{
+position:fixed;
+bottom:80px;
+right:15px;
+background:#22c55e;
+color:white;
+padding:12px;
+border-radius:50%;
+font-size:18px;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+cursor:pointer;
+}
+
+/* BOTTOM NAV */
+.bottomNav{
+position:fixed;
+bottom:0;
+width:100%;
+display:flex;
+justify-content:space-around;
+background:white;
+border-top:1px solid #eee;
+padding:8px 0;
+}
+.bottomNav div{
+text-align:center;
+font-size:12px;
+cursor:pointer;
+}
+
+/* FOOTER */
+.footer{
+background:#22c55e;
+color:white;
+padding:15px;
+text-align:center;
+margin-top:20px;
+}
 </style>
 </head>
 
@@ -80,43 +188,67 @@ button{width:100%;padding:10px;margin-top:8px;border:none;background:#0b2e13;col
 
 <!-- HEADER -->
 <div class="header">
-<div class="menu" onclick="toggleMenu()">☰</div>
-<div class="logoBox"><img src="logo.png"><b>MANLET</b></div>
-<div class="cart" onclick="openCart()">🛒</div>
+<div onclick="toggleMenu()">☰</div>
+<b>MANLET</b>
+<div onclick="openCart()">🛒</div>
 </div>
 
 <!-- HOME -->
-<div class="home" id="home">
-<input class="search" placeholder="Search">
+<div id="home" class="active">
+<input class="search" placeholder="Search..." oninput="searchProducts(this.value)">
 <div class="products" id="homeProducts"></div>
 </div>
 
 <!-- CATEGORY -->
-<div class="page" id="catPage">
+<div id="catPage" class="page">
 <div class="back" onclick="goHome()">⬅ Back</div>
 <div class="products" id="catProducts"></div>
 </div>
 
 <!-- DETAIL -->
-<div class="page" id="detailPage">
+<div id="detailPage" class="page">
 <div class="back" onclick="goHome()">⬅ Back</div>
 <div id="detail"></div>
 </div>
 
 <!-- CART -->
-<div class="page" id="cartPage">
+<div id="cartPage" class="page">
 <div class="back" onclick="goHome()">⬅ Back</div>
+
+<input id="custName" class="search" placeholder="Your Name">
+<input id="custAddr" class="search" placeholder="Your Address">
+
 <div id="cartItems"></div>
 <h3 id="total"></h3>
+
 <button onclick="checkout()">Buy Now</button>
+</div>
+
+<!-- FLOAT CART -->
+<div class="floatCart" onclick="openCart()">🛒</div>
+
+<!-- FOOTER -->
+<div class="footer">
+<h3>Customer Service</h3>
+<p>+91 86386 18446</p>
+<p>+91 8822873317</p>
+<p>manlethub@gmail.com</p>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottomNav">
+<div onclick="goHome()">🏠<br>Home</div>
+<div onclick="toggleMenu()">📂<br>Menu</div>
+<div onclick="openCart()">🛒<br>Cart</div>
 </div>
 
 <script>
 
-setTimeout(()=>{splash.style.display="none"},2800)
+setTimeout(()=>splash.style.display="none",3000)
 
 const phone="918638618446"
 let cart=[]
+let qty=1
 
 const data=[
 {name:"Vokka Perfume",cat:"perfume",price:250,img:"vokka-perfume.jpg"},
@@ -129,22 +261,7 @@ const data=[
 ]
 
 function toggleMenu(){
-sidebar.style.left= sidebar.style.left=="0px"?"-220px":"0px"
-}
-
-function showHome(){
-home.style.display="block"
-catPage.style.display="none"
-detailPage.style.display="none"
-cartPage.style.display="none"
-}
-
-function openCat(cat){
-sidebar.style.left="-220px"
-home.style.display="none"
-catPage.style.display="block"
-catProducts.innerHTML=""
-data.filter(p=>p.cat==cat).forEach(p=>catProducts.innerHTML+=card(p))
+sidebar.style.left=sidebar.style.left=="0px"?"-220px":"0px"
 }
 
 function card(p){
@@ -155,10 +272,25 @@ return `<div class="card" onclick="openDetail('${p.name}')">
 </div>`
 }
 
+data.forEach(p=>homeProducts.innerHTML+=card(p))
+
+function searchProducts(q){
+homeProducts.innerHTML=""
+data.filter(p=>p.name.toLowerCase().includes(q.toLowerCase()))
+.forEach(p=>homeProducts.innerHTML+=card(p))
+}
+
+function openCat(cat){
+home.classList.remove("active")
+catPage.classList.add("active")
+catProducts.innerHTML=""
+data.filter(p=>p.cat==cat).forEach(p=>catProducts.innerHTML+=card(p))
+}
+
 function openDetail(name){
-home.style.display="none"
-catPage.style.display="none"
-detailPage.style.display="block"
+qty=1
+catPage.classList.remove("active")
+detailPage.classList.add("active")
 
 let p=data.find(x=>x.name==name)
 
@@ -167,75 +299,87 @@ detail.innerHTML=`
 <img src="${p.img}">
 <h2>${p.name}</h2>
 <h3>₹${p.price}</h3>
+
+<div class="qtyBox">
+<button onclick="changeQty(-1)">-</button>
+<span id="qty">${qty}</span>
+<button onclick="changeQty(1)">+</button>
+</div>
+
 <button onclick="buyNow('${p.name}',${p.price})">Buy Now</button>
 <button onclick="addCart('${p.name}')">Add to Cart</button>
 </div>`
 }
 
+function changeQty(v){
+qty+=v
+if(qty<1)qty=1
+document.getElementById("qty").innerText=qty
+}
+
 function buyNow(name,price){
-let msg=`Order:%0A${name}%0APrice: ₹${price}`
+let n=prompt("Enter Name")
+let a=prompt("Enter Address")
+if(!n||!a){alert("Enter details");return}
+
+let total=price*qty
+
+let msg=`🛒 MANLET ORDER%0AName:${n}%0AAddress:${a}%0AProduct:${name}%0AQty:${qty}%0ATotal: ₹${total}`
+
 window.open(`https://wa.me/${phone}?text=${msg}`)
 }
 
 function addCart(name){
 let f=cart.find(x=>x.name==name)
-if(f)f.qty++
-else cart.push({name,qty:1})
-alert("Added")
+if(f)f.qty+=qty
+else cart.push({name,qty})
+alert("Added to cart")
 }
 
 function openCart(){
-home.style.display="none"
-cartPage.style.display="block"
-catPage.style.display="none"
-detailPage.style.display="none"
+home.classList.remove("active")
+cartPage.classList.add("active")
 
 let t=0
 cartItems.innerHTML=""
+
 cart.forEach(p=>{
 let item=data.find(x=>x.name==p.name)
 let sub=item.price*p.qty
 t+=sub
 
-cartItems.innerHTML+=`
-<div class="cartItem">
-${p.name}
-<div class="qty">
-<button onclick="changeQty('${p.name}',-1)">-</button>
-${p.qty}
-<button onclick="changeQty('${p.name}',1)">+</button>
-</div>
-</div>`
+cartItems.innerHTML+=`<p>${p.name} x${p.qty} = ₹${sub}</p>`
 })
 
 total.innerText="Total: ₹"+t
 }
 
-function changeQty(name,v){
-let f=cart.find(x=>x.name==name)
-f.qty+=v
-if(f.qty<=0)cart=cart.filter(x=>x.name!=name)
-openCart()
-}
-
 function checkout(){
-let msg="Order:%0A"
+let n=custName.value
+let a=custAddr.value
+if(!n||!a){alert("Enter details");return}
+
+let msg=`🛒 MANLET ORDER%0AName:${n}%0AAddress:${a}%0A`
 let t=0
+
 cart.forEach(p=>{
 let item=data.find(x=>x.name==p.name)
 let sub=item.price*p.qty
 t+=sub
 msg+=`${p.name} x${p.qty} = ₹${sub}%0A`
 })
+
 msg+=`Total: ₹${t}`
+
 window.open(`https://wa.me/${phone}?text=${msg}`)
 }
 
-function goHome(){showHome()}
-
-data.forEach(p=>homeProducts.innerHTML+=card(p))
-
-showHome()
+function goHome(){
+home.classList.add("active")
+catPage.classList.remove("active")
+detailPage.classList.remove("active")
+cartPage.classList.remove("active")
+}
 
 </script>
 
