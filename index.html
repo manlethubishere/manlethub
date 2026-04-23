@@ -5,12 +5,7 @@
 <title>MANLET</title>
 
 <style>
-body{
-margin:0;
-font-family:Arial;
-background:#f9f9f9;
-padding-bottom:70px;
-}
+body{margin:0;font-family:Arial;background:#f9f9f9;padding-bottom:70px}
 
 /* SPLASH */
 #splash{
@@ -31,69 +26,37 @@ animation:anim 3s ease forwards;
 
 /* HEADER */
 .header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:12px;
-background:white;
-border-bottom:1px solid #eee;
-position:sticky;
-top:0;
-z-index:10;
+display:flex;justify-content:space-between;align-items:center;
+padding:12px;background:white;border-bottom:1px solid #eee;
+position:sticky;top:0;z-index:10;
 }
 
 /* SIDEBAR */
 .sidebar{
-position:fixed;
-left:-220px;
-top:0;
-width:200px;
-height:100%;
-background:#22c55e;
-color:white;
-transition:.3s;
-z-index:100;
+position:fixed;left:-220px;top:0;width:200px;height:100%;
+background:#22c55e;color:white;transition:.3s;z-index:100;
 }
-.sidebar div{
-padding:15px;
-border-bottom:1px solid rgba(255,255,255,0.2);
-cursor:pointer;
-}
+.sidebar div{padding:15px;border-bottom:1px solid rgba(255,255,255,0.2);cursor:pointer}
 
 /* SEARCH */
 .search{
-width:90%;
-margin:10px;
-padding:10px;
-border-radius:8px;
-border:1px solid #ccc;
+width:90%;margin:10px;padding:10px;border-radius:8px;border:1px solid #ccc;
 }
 
 /* PRODUCTS */
 .products{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:12px;
-padding:10px;
+display:grid;grid-template-columns:repeat(2,1fr);
+gap:12px;padding:10px;
 }
 .card{
-background:white;
-border-radius:12px;
-padding:10px;
+background:white;border-radius:12px;padding:10px;
 box-shadow:0 5px 15px rgba(0,0,0,0.08);
-transition:.2s;
-}
-.card:active{
-transform:scale(0.97);
 }
 .card img{
-width:100%;
-height:130px;
-object-fit:cover;
-border-radius:10px;
+width:100%;height:130px;object-fit:cover;border-radius:10px;
 }
 
-/* PAGES */
+/* PAGE */
 .page{display:none;}
 .active{display:block;}
 
@@ -105,74 +68,38 @@ cursor:pointer;
 
 /* DETAIL */
 .detail img{
-width:100%;
-height:200px;
-object-fit:cover;
-border-radius:12px;
-}
-.qtyBox{
-display:flex;
-gap:10px;
-align-items:center;
-margin-top:10px;
+width:100%;height:200px;object-fit:cover;border-radius:12px;
 }
 
 /* BUTTON */
 button{
-width:100%;
-padding:12px;
-margin-top:10px;
-border:none;
-background:#22c55e;
-color:white;
-border-radius:8px;
+width:100%;padding:12px;margin-top:10px;
+background:#22c55e;color:white;border:none;border-radius:8px;
 }
 
 /* FLOAT CART */
 .floatCart{
-position:fixed;
-bottom:80px;
-right:15px;
-background:#22c55e;
-color:white;
-padding:12px;
-border-radius:50%;
-font-size:18px;
-box-shadow:0 5px 15px rgba(0,0,0,0.2);
-cursor:pointer;
+position:fixed;bottom:80px;right:15px;
+background:#22c55e;color:white;padding:12px;border-radius:50%;
 }
 
 /* BOTTOM NAV */
 .bottomNav{
-position:fixed;
-bottom:0;
-width:100%;
-display:flex;
-justify-content:space-around;
-background:white;
-border-top:1px solid #eee;
-padding:8px 0;
+position:fixed;bottom:0;width:100%;
+display:flex;justify-content:space-around;
+background:white;border-top:1px solid #eee;padding:8px 0;
 }
-.bottomNav div{
-text-align:center;
-font-size:12px;
-cursor:pointer;
-}
+.bottomNav div{text-align:center;font-size:12px}
 
 /* FOOTER */
 .footer{
-background:#22c55e;
-color:white;
-padding:15px;
-text-align:center;
-margin-top:20px;
+background:#22c55e;color:white;padding:15px;text-align:center;margin-top:20px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- SPLASH -->
 <div id="splash"><img id="logo" src="logo.png"></div>
 
 <!-- SIDEBAR -->
@@ -190,7 +117,7 @@ margin-top:20px;
 <div class="header">
 <div onclick="toggleMenu()">☰</div>
 <b>MANLET</b>
-<div onclick="openCart()">🛒</div>
+<div onclick="goTo('cart')">🛒</div>
 </div>
 
 <!-- HOME -->
@@ -201,19 +128,19 @@ margin-top:20px;
 
 <!-- CATEGORY -->
 <div id="catPage" class="page">
-<div class="back" onclick="goHome()">⬅ Back</div>
+<div class="back" onclick="goBack()">⬅ Back</div>
 <div class="products" id="catProducts"></div>
 </div>
 
 <!-- DETAIL -->
 <div id="detailPage" class="page">
-<div class="back" onclick="goHome()">⬅ Back</div>
+<div class="back" onclick="goBack()">⬅ Back</div>
 <div id="detail"></div>
 </div>
 
 <!-- CART -->
 <div id="cartPage" class="page">
-<div class="back" onclick="goHome()">⬅ Back</div>
+<div class="back" onclick="goBack()">⬅ Back</div>
 
 <input id="custName" class="search" placeholder="Your Name">
 <input id="custAddr" class="search" placeholder="Your Address">
@@ -224,10 +151,8 @@ margin-top:20px;
 <button onclick="checkout()">Buy Now</button>
 </div>
 
-<!-- FLOAT CART -->
-<div class="floatCart" onclick="openCart()">🛒</div>
+<div class="floatCart" onclick="goTo('cart')">🛒</div>
 
-<!-- FOOTER -->
 <div class="footer">
 <h3>Customer Service</h3>
 <p>+91 86386 18446</p>
@@ -235,11 +160,10 @@ margin-top:20px;
 <p>manlethub@gmail.com</p>
 </div>
 
-<!-- BOTTOM NAV -->
 <div class="bottomNav">
-<div onclick="goHome()">🏠<br>Home</div>
+<div onclick="goTo('home')">🏠<br>Home</div>
 <div onclick="toggleMenu()">📂<br>Menu</div>
-<div onclick="openCart()">🛒<br>Cart</div>
+<div onclick="goTo('cart')">🛒<br>Cart</div>
 </div>
 
 <script>
@@ -250,6 +174,34 @@ const phone="918638618446"
 let cart=[]
 let qty=1
 
+function goTo(page){
+document.querySelectorAll(".page,#home").forEach(p=>p.classList.remove("active"))
+
+if(page=="home") home.classList.add("active")
+if(page=="cart") cartPage.classList.add("active")
+
+history.pushState({page}, "")
+renderCart()
+}
+
+function goBack(){
+history.back()
+}
+
+window.onpopstate=function(e){
+let page=e.state?.page||"home"
+document.querySelectorAll(".page,#home").forEach(p=>p.classList.remove("active"))
+
+if(page=="home") home.classList.add("active")
+if(page=="cart") cartPage.classList.add("active")
+if(page=="cat") catPage.classList.add("active")
+if(page=="detail") detailPage.classList.add("active")
+}
+
+function toggleMenu(){
+sidebar.style.left=sidebar.style.left=="0px"?"-220px":"0px"
+}
+
 const data=[
 {name:"Vokka Perfume",cat:"perfume",price:250,img:"vokka-perfume.jpg"},
 {name:"Tata Haldi",cat:"grocery",price:150,img:"tata-haldi.jpg"},
@@ -259,10 +211,6 @@ const data=[
 {name:"Coca Cola",cat:"beverages",price:40,img:"cocacola.jpg"},
 {name:"Smart TV",cat:"electronics",price:4699,img:"smart-tv.jpg"}
 ]
-
-function toggleMenu(){
-sidebar.style.left=sidebar.style.left=="0px"?"-220px":"0px"
-}
 
 function card(p){
 return `<div class="card" onclick="openDetail('${p.name}')">
@@ -281,104 +229,65 @@ data.filter(p=>p.name.toLowerCase().includes(q.toLowerCase()))
 }
 
 function openCat(cat){
-home.classList.remove("active")
-catPage.classList.add("active")
+toggleMenu()
+goTo('cat')
 catProducts.innerHTML=""
 data.filter(p=>p.cat==cat).forEach(p=>catProducts.innerHTML+=card(p))
 }
 
 function openDetail(name){
-qty=1
-catPage.classList.remove("active")
-detailPage.classList.add("active")
-
+goTo('detail')
 let p=data.find(x=>x.name==name)
 
 detail.innerHTML=`
-<div class="detail">
 <img src="${p.img}">
 <h2>${p.name}</h2>
 <h3>₹${p.price}</h3>
 
-<div class="qtyBox">
-<button onclick="changeQty(-1)">-</button>
-<span id="qty">${qty}</span>
-<button onclick="changeQty(1)">+</button>
-</div>
-
 <button onclick="buyNow('${p.name}',${p.price})">Buy Now</button>
 <button onclick="addCart('${p.name}')">Add to Cart</button>
-</div>`
-}
-
-function changeQty(v){
-qty+=v
-if(qty<1)qty=1
-document.getElementById("qty").innerText=qty
-}
-
-function buyNow(name,price){
-let n=prompt("Enter Name")
-let a=prompt("Enter Address")
-if(!n||!a){alert("Enter details");return}
-
-let total=price*qty
-
-let msg=`🛒 MANLET ORDER%0AName:${n}%0AAddress:${a}%0AProduct:${name}%0AQty:${qty}%0ATotal: ₹${total}`
-
-window.open(`https://wa.me/${phone}?text=${msg}`)
+`
 }
 
 function addCart(name){
 let f=cart.find(x=>x.name==name)
-if(f)f.qty+=qty
-else cart.push({name,qty})
-alert("Added to cart")
+if(f)f.qty++
+else cart.push({name,qty:1})
+alert("Added")
 }
 
-function openCart(){
-home.classList.remove("active")
-cartPage.classList.add("active")
-
+function renderCart(){
 let t=0
 cartItems.innerHTML=""
-
 cart.forEach(p=>{
 let item=data.find(x=>x.name==p.name)
 let sub=item.price*p.qty
 t+=sub
-
 cartItems.innerHTML+=`<p>${p.name} x${p.qty} = ₹${sub}</p>`
 })
-
 total.innerText="Total: ₹"+t
+}
+
+function buyNow(name,price){
+let n=prompt("Name")
+let a=prompt("Address")
+if(!n||!a)return
+
+let msg=`🛒 Order%0A${name}%0AName:${n}%0AAddress:${a}%0A₹${price}`
+window.open(`https://wa.me/${phone}?text=${msg}`)
 }
 
 function checkout(){
 let n=custName.value
 let a=custAddr.value
-if(!n||!a){alert("Enter details");return}
+if(!n||!a)return
 
-let msg=`🛒 MANLET ORDER%0AName:${n}%0AAddress:${a}%0A`
-let t=0
-
+let msg=`🛒 Order%0AName:${n}%0AAddress:${a}%0A`
 cart.forEach(p=>{
 let item=data.find(x=>x.name==p.name)
-let sub=item.price*p.qty
-t+=sub
-msg+=`${p.name} x${p.qty} = ₹${sub}%0A`
+msg+=`${p.name} x${p.qty}%0A`
 })
-
-msg+=`Total: ₹${t}`
-
 window.open(`https://wa.me/${phone}?text=${msg}`)
-}
-
-function goHome(){
-home.classList.add("active")
-catPage.classList.remove("active")
-detailPage.classList.remove("active")
-cartPage.classList.remove("active")
 }
 
 </script>
