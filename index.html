@@ -9,8 +9,7 @@
 body{
   margin:0;
   font-family:Arial;
-  background:#0b2e13;
-  color:white;
+  background:white;
   overflow-x:hidden;
 }
 
@@ -19,92 +18,98 @@ body{
   position:fixed;
   width:100%;
   height:100%;
-  background:#0b2e13;
+  background:white;
   z-index:999;
 }
 
 #logo{
   position:absolute;
   width:120px;
-  animation:moveLogo 3s ease forwards;
+  animation:myntra 3s cubic-bezier(0.25,1,0.5,1) forwards;
 }
 
-@keyframes moveLogo{
-  0%{top:50%;left:50%;transform:translate(-50%,-50%);opacity:0}
-  20%{opacity:1;}
-  60%{top:50%;left:50%;transform:translate(-50%,-50%)}
-  100%{top:15px;right:20px;left:auto;transform:none;}
+@keyframes myntra{
+  0%{top:50%;left:50%;transform:translate(-50%,-50%) scale(0.5);opacity:0}
+  30%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}
+  50%{transform:translate(-50%,-50%) scale(1)}
+  70%{transform:translate(-50%,-50%) scale(1.05)}
+  100%{top:10px;left:15px;transform:scale(0.7);}
 }
 
-/* LAYOUT */
-.container{display:flex}
-
-/* SIDEBAR */
-.sidebar{
-  width:200px;
-  background:#123d1a;
-  height:100vh;
-  padding:10px;
-}
-.sidebar div{
-  padding:12px;
-  cursor:pointer;
-  transition:.3s;
-}
-.sidebar div:hover{background:#1f5e2c}
-
-/* CONTENT */
-.content{flex:1;padding:15px}
-
+/* HEADER */
 .header{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  padding:10px;
+  border-bottom:1px solid #eee;
+}
+.menu{font-size:22px;cursor:pointer;}
+.title{font-weight:bold;}
+.cart{font-size:20px;cursor:pointer;}
+
+/* SIDEBAR */
+.sidebar{
+  position:fixed;
+  left:-220px;
+  top:0;
+  width:200px;
+  height:100%;
+  background:white;
+  box-shadow:2px 0 10px rgba(0,0,0,0.1);
+  transition:.3s;
+  z-index:100;
+}
+.sidebar div{
+  padding:15px;
+  border-bottom:1px solid #eee;
+  cursor:pointer;
+}
+.sidebar div.active{
+  background:#0b2e13;
+  color:white;
 }
 
-.cart{cursor:pointer;font-size:20px}
+/* HOME */
+.home{padding:15px;}
+.search{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
 
 /* PRODUCTS */
 .products{
+  padding:15px;
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:15px;
-  margin-top:20px;
 }
-
-/* SLIDE */
-.slide-out{animation:slideOut .3s forwards;}
-.slide-in{animation:slideIn .3s forwards;}
-
-@keyframes slideOut{to{transform:translateX(-100%);opacity:0}}
-@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
-
-/* CARD */
 .card{
-  background:white;
-  color:black;
-  padding:10px;
+  border:1px solid #eee;
   border-radius:10px;
+  padding:10px;
 }
 .card img{
   width:100%;
   height:120px;
   object-fit:cover;
-  border-radius:8px;
 }
+.price{text-decoration:line-through;color:gray;}
+.discount{color:green;font-weight:bold;}
 
-.price{text-decoration:line-through;color:gray}
-.discount{color:green;font-weight:bold}
-
-button{
+/* PAGE SLIDE */
+.page{
+  position:absolute;
   width:100%;
-  padding:8px;
-  margin-top:5px;
-  border:none;
-  background:#0b2e13;
-  color:white;
-  border-radius:5px;
+  top:0;
+  left:100%;
+  background:white;
+  min-height:100vh;
+  transition:.35s ease;
 }
+.page.active{left:0;}
 
 /* DETAIL */
 #detail{
@@ -114,7 +119,6 @@ button{
   width:100%;
   height:100%;
   background:white;
-  color:black;
   display:none;
   padding:20px;
 }
@@ -128,29 +132,32 @@ button{
   <img id="logo" src="logo.png">
 </div>
 
-<div class="container">
-
 <!-- SIDEBAR -->
-<div class="sidebar">
-  <div onclick="changeCategory('perfume')">Perfumes</div>
-  <div onclick="changeCategory('grocery')">Grocery</div>
-  <div onclick="changeCategory('beverages')">Beverages</div>
-  <div onclick="changeCategory('namkeen')">Namkeen</div>
-  <div onclick="changeCategory('beauty')">Beauty</div>
-  <div onclick="changeCategory('fashion')">Fashion</div>
-  <div onclick="changeCategory('electronics')">Electronics</div>
+<div class="sidebar" id="sidebar">
+  <div onclick="openPage('perfume')">Perfumes</div>
+  <div onclick="openPage('grocery')">Grocery</div>
+  <div onclick="openPage('beverages')">Beverages</div>
+  <div onclick="openPage('namkeen')">Namkeen</div>
+  <div onclick="openPage('beauty')">Beauty</div>
+  <div onclick="openPage('fashion')">Fashion</div>
+  <div onclick="openPage('electronics')">Electronics</div>
 </div>
 
-<!-- CONTENT -->
-<div class="content">
-  <div class="header">
-    <h2>MANLET</h2>
-    <div class="cart" onclick="sendCart()">🛒</div>
-  </div>
-
-  <div id="products" class="products"></div>
+<!-- HEADER -->
+<div class="header">
+  <div class="menu" onclick="toggleMenu()">☰</div>
+  <div class="title">MANLET</div>
+  <div class="cart" onclick="sendCart()">🛒</div>
 </div>
 
+<!-- HOME -->
+<div class="home" id="home">
+  <input class="search" placeholder="Search products...">
+</div>
+
+<!-- PRODUCT PAGE -->
+<div class="page" id="page">
+  <div class="products" id="products"></div>
 </div>
 
 <!-- DETAIL -->
@@ -175,23 +182,17 @@ const data={
   electronics:[{name:"Smart TV",mrp:13999,price:4699,discount:"67%",img:"smart-tv.jpg"}]
 };
 
-function changeCategory(cat){
-  const container=document.getElementById("products");
-  container.classList.add("slide-out");
-
-  setTimeout(()=>{
-    loadCategory(cat);
-    container.classList.remove("slide-out");
-    container.classList.add("slide-in");
-
-    setTimeout(()=>{
-      container.classList.remove("slide-in");
-    },300);
-
-  },300);
+function toggleMenu(){
+  let s=document.getElementById("sidebar");
+  s.style.left = s.style.left==="0px" ? "-220px" : "0px";
 }
 
-function loadCategory(cat){
+function openPage(cat){
+  document.getElementById("sidebar").style.left="-220px";
+  document.getElementById("home").style.display="none";
+  let page=document.getElementById("page");
+  page.classList.add("active");
+
   const c=document.getElementById("products");
   c.innerHTML="";
   data[cat].forEach(p=>{
@@ -207,15 +208,13 @@ function loadCategory(cat){
 }
 
 function showDetail(name,mrp,price,discount){
-  const d=document.getElementById("detail");
+  let d=document.getElementById("detail");
   d.style.display="block";
-
   d.innerHTML=`
   <h2>${name}</h2>
   <p><strike>₹${mrp}</strike></p>
   <h3>₹${price}</h3>
   <p style="color:green">${discount} OFF</p>
-
   <button onclick="addToCart('${name}',${price})">Add to Cart</button>
   <button onclick="buyNow('${name}',${price})">Buy Now</button>
   <button onclick="closeDetail()">Back</button>`;
@@ -228,32 +227,24 @@ function closeDetail(){
 function addToCart(name,price){
   let f=cart.find(p=>p.name===name);
   if(f){f.qty++} else {cart.push({name,price,qty:1})}
-  alert("Added to cart");
+  alert("Added");
 }
 
 function buyNow(name,price){
-  let msg=`🛒 *MANLET ORDER*%0AProduct: ${name}%0AQty:1%0ATotal: ₹${price}`;
+  let msg=`🛒 MANLET ORDER%0A${name}%0A₹${price}`;
   window.open(`https://wa.me/${phone}?text=${msg}`);
 }
 
 function sendCart(){
-  if(cart.length==0){alert("Cart empty");return;}
-
-  let total=0;
-  let msg=`🛒 *MANLET FULL ORDER*%0A%0A`;
-
+  let total=0,msg="🛒 MANLET ORDER%0A";
   cart.forEach(p=>{
     let sub=p.price*p.qty;
     total+=sub;
-    msg+=`• ${p.name}%0AQty:${p.qty} | ₹${sub}%0A%0A`;
+    msg+=`${p.name} x${p.qty} = ₹${sub}%0A`;
   });
-
-  msg+=`Total Amount: ₹${total}`;
-
+  msg+=`Total: ₹${total}`;
   window.open(`https://wa.me/${phone}?text=${msg}`);
 }
-
-loadCategory('perfume');
 
 </script>
 
