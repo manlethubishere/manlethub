@@ -8,69 +8,36 @@
 body{margin:0;font-family:Arial;background:#fff;color:#000}
 
 /* SPLASH */
-#splash{
-position:fixed;width:100%;height:100%;
-background:#fff;display:flex;justify-content:center;align-items:center;
-z-index:999;
-}
+#splash{position:fixed;width:100%;height:100%;background:#fff;display:flex;justify-content:center;align-items:center;z-index:999;}
 #logo{width:120px;animation:zoom 2s ease;}
-@keyframes zoom{
-0%{transform:scale(0.5);opacity:0}
-50%{transform:scale(1.2)}
-100%{transform:scale(1)}
-}
+@keyframes zoom{0%{transform:scale(0.5);opacity:0}50%{transform:scale(1.2)}100%{transform:scale(1)}}
 
 /* HEADER */
-.header{
-display:flex;justify-content:space-between;align-items:center;
-padding:12px;background:#000;color:#fff;
-}
+.header{display:flex;justify-content:space-between;align-items:center;padding:12px;background:#000;color:#fff}
 
 /* SIDEBAR */
-.sidebar{
-position:fixed;left:-220px;top:0;width:200px;height:100%;
-background:#000;color:#fff;transition:.3s;z-index:100;
-}
+.sidebar{position:fixed;left:-220px;top:0;width:220px;height:100%;background:#000;color:#fff;transition:.3s;z-index:100}
 .sidebar div{padding:14px;border-bottom:1px solid #333;cursor:pointer}
 
+/* SEARCH */
+.search{width:90%;margin:10px;padding:10px;border:1px solid #ccc}
+
 /* PRODUCTS */
-.products{
-display:grid;grid-template-columns:repeat(2,1fr);
-gap:12px;padding:10px;
-}
-.card{
-background:#fff;border-radius:12px;padding:10px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
-.card img{
-width:100%;height:130px;object-fit:contain;background:#fff;
-}
+.products{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:10px}
+.card{background:#fff;border-radius:12px;padding:10px;box-shadow:0 5px 15px rgba(0,0,0,0.1)}
+.card img{width:100%;height:130px;object-fit:contain;background:#fff}
 
 /* DETAIL */
-.detail-img{
-width:100%;height:250px;object-fit:contain;background:#fff;
-}
+.detail-img{width:100%;height:250px;object-fit:contain;background:#fff}
 
 /* TEXT */
 .price{text-decoration:line-through;color:gray}
-.discount{color:#000;font-weight:bold}
-
-/* SIZE */
-.size-box{
-padding:10px;border:2px solid #000;
-display:inline-block;margin:10px 0;
-}
 
 /* BUTTON */
-button{
-width:100%;padding:10px;margin-top:10px;
-background:#000;color:#fff;border:none;border-radius:6px;
-}
+button{width:100%;padding:10px;margin-top:10px;background:#000;color:#fff;border:none}
 
 /* PAGE */
-.page{display:none}
-.active{display:block}
-
+.page{display:none}.active{display:block}
 .back{padding:10px;font-weight:bold;cursor:pointer}
 
 /* CART */
@@ -85,7 +52,7 @@ background:#000;color:#fff;border:none;border-radius:6px;
 <div class="sidebar" id="sidebar">
 <div onclick="goHome()">Home</div>
 <div onclick="openCategory('beauty')">Beauty</div>
-<div onclick="openCategory('perfume')">Perfumes</div>
+<div onclick="openCategory('perfume')">Perfume</div>
 <div onclick="openCategory('wholesale')">Wholesale</div>
 </div>
 
@@ -97,6 +64,7 @@ background:#000;color:#fff;border:none;border-radius:6px;
 
 <!-- HOME -->
 <div id="home" class="page active">
+<input class="search" placeholder="Search products..." oninput="search(this.value)">
 <div class="products" id="homeProducts"></div>
 </div>
 
@@ -115,13 +83,10 @@ background:#000;color:#fff;border:none;border-radius:6px;
 <!-- CART -->
 <div id="cartPage" class="page">
 <div class="back" onclick="goBack()">⬅ Back</div>
-
-<input id="name" placeholder="Name" style="width:90%;margin:10px;padding:10px">
-<input id="address" placeholder="Address" style="width:90%;margin:10px;padding:10px">
-
+<input id="name" placeholder="Name" class="search">
+<input id="address" placeholder="Address" class="search">
 <div id="cartItems"></div>
 <h3 id="total"></h3>
-
 <button onclick="checkout()">Buy Now</button>
 </div>
 
@@ -132,35 +97,53 @@ setTimeout(()=>splash.style.display="none",2000)
 let cart=[]
 
 const data=[
-{name:"Jasmine Hair Oil",cat:"beauty",mrp:425,price:297,disc:"30%",qty:"250ml",desc:"Hair nourishment oil",img:"oil.jpg"},
-{name:"Lotus Sunscreen",cat:"beauty",mrp:240,price:204,disc:"15%",qty:"100g",desc:"UV protection sunscreen",img:"sunscreen.jpg"},
-{name:"Streax Serum",cat:"beauty",mrp:340,price:323,disc:"5%",qty:"100ml",desc:"Smooth hair serum",img:"serum.jpg"},
-{name:"Mamaearth Facewash",cat:"beauty",mrp:269,price:242,disc:"10%",qty:"150ml",desc:"Glow facewash",img:"facewash.jpg"},
-{name:"Axe Deodorant",cat:"perfume",mrp:499,price:280,disc:"30%",qty:"150ml",desc:"Long lasting deodorant",img:"axe.jpg"},
 
-{name:"Triple choco(full box)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Box",desc:"Bulk chocolate box",img:"w1.jpg"},
-{name:"chokers(full box)",cat:"wholesale",mrp:150,price:130,disc:"14%",qty:"Box",desc:"Bulk chokers pack",img:"w2.jpg"},
-{name:"choco stick(full jar)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Jar",desc:"Chocolate sticks jar",img:"w3.jpg"}
+// NORMAL
+{name:"Jasmine Hair Oil",cat:"beauty",mrp:425,price:297,qty:"250ml",desc:"Nourishing hair oil for smooth and healthy hair.",img:"oil.jpg"},
+{name:"Lotus Sunscreen",cat:"beauty",mrp:240,price:204,qty:"100g",desc:"Protects skin from harmful sun rays.",img:"sunscreen.jpg"},
+{name:"Streax Hair Serum",cat:"beauty",mrp:340,price:323,qty:"100ml",desc:"Adds shine and smoothness to hair.",img:"serum.jpg"},
+{name:"Mama earth turmeric&saffron facewash",cat:"beauty",mrp:269,price:242,qty:"150ml",desc:"Brightens and cleans skin deeply.",img:"facewash.jpg"},
+{name:"Axe deodrant",cat:"perfume",mrp:499,price:280,qty:"150ml",desc:"Long lasting fragrance for daily use.",img:"axe.jpg"},
+
+// ALL 26 WHOLESALE
+{name:"Triple choco(full box)",cat:"wholesale",mrp:150,price:120,qty:"Box",desc:"Bulk chocolate box for resale.",img:"w1.jpg"},
+{name:"chokers(full box)",cat:"wholesale",mrp:150,price:130,qty:"Box",desc:"Popular chokers candy box.",img:"w2.jpg"},
+{name:"choco stick(full jar)",cat:"wholesale",mrp:150,price:120,qty:"Jar",desc:"Chocolate sticks jar pack.",img:"w3.jpg"},
+{name:"milk n nut(full box)",cat:"wholesale",mrp:200,price:170,qty:"Box",desc:"Chocolate with nut mix box.",img:"w4.jpg"},
+{name:"FRU POP (full pack)",cat:"wholesale",mrp:150,price:120,qty:"Pack",desc:"Fruit flavored candy pack.",img:"w5.jpg"},
+{name:"America Cow(full box)",cat:"wholesale",mrp:150,price:120,qty:"Box",desc:"Sweet milk candy bulk box.",img:"w6.jpg"},
+{name:"Dovana (full box)",cat:"wholesale",mrp:350,price:280,qty:"Box",desc:"Premium assorted candy box.",img:"w7.jpg"},
+{name:"Heartilo(full box)",cat:"wholesale",mrp:300,price:240,qty:"Box",desc:"Heart shaped sweets box.",img:"w8.jpg"},
+{name:"GEMGZ (full box)",cat:"wholesale",mrp:120,price:120,qty:"Box",desc:"Colorful chocolate candy box.",img:"w9.jpg"},
+{name:"Makhan Malai (full box)",cat:"wholesale",mrp:200,price:160,qty:"Box",desc:"Soft sweet dessert pack.",img:"w10.jpg"},
+{name:"Eye Balls (full box)",cat:"wholesale",mrp:150,price:125,qty:"Box",desc:"Fun candy eyeball pack.",img:"w11.jpg"},
+{name:"Dragon mosquito incense stick (full box)",cat:"wholesale",mrp:120,price:72,qty:"Box",desc:"Mosquito repellent incense sticks.",img:"w12.jpg"},
+{name:"D LOVE (full pack)",cat:"wholesale",mrp:350,price:315,qty:"Pack",desc:"Premium love themed candy pack.",img:"w13.jpg"},
+{name:"Fruit jellos (full box)",cat:"wholesale",mrp:150,price:120,qty:"Box",desc:"Jelly fruit sweets box.",img:"w14.jpg"},
+{name:"Bery bliss (fullbox)",cat:"wholesale",mrp:300,price:240,qty:"Box",desc:"Berry flavored candy box.",img:"w15.jpg"},
+{name:"Milk n nut(full jar)",cat:"wholesale",mrp:250,price:212,qty:"Jar",desc:"Milk nut jar pack.",img:"w16.jpg"},
+{name:"Kit-Kat (fullbox)",cat:"wholesale",mrp:250,price:200,qty:"Box",desc:"Kitkat chocolate bulk pack.",img:"w17.jpg"},
+{name:"Magic Pan(full box)",cat:"wholesale",mrp:150,price:120,qty:"Box",desc:"Pan flavored candy box.",img:"w18.jpg"},
+{name:"Jelly(full box)",cat:"wholesale",mrp:120,price:115,qty:"Box",desc:"Jelly sweets bulk box.",img:"w19.jpg"},
+{name:"Badam chakki(full pack)",cat:"wholesale",mrp:60,price:42,qty:"Pack",desc:"Almond sweet pack.",img:"w20.jpg"},
+{name:"king Kon(full jar)",cat:"wholesale",mrp:300,price:240,qty:"Jar",desc:"Cone candy jar pack.",img:"w21.jpg"},
+{name:"Caikes orange flavoured(full pack)",cat:"wholesale",mrp:300,price:240,qty:"Pack",desc:"Orange flavored cakes pack.",img:"w22.jpg"},
+{name:"PIK POK(full jar)",cat:"wholesale",mrp:240,price:168,qty:"Jar",desc:"Spicy candy jar pack.",img:"w23.jpg"},
+{name:"Swiss roll (full pack)",cat:"wholesale",mrp:150,price:120,qty:"Pack",desc:"Soft swiss roll cakes.",img:"w24.jpg"},
+{name:"Choco bar(full box)",cat:"wholesale",mrp:150,price:120,qty:"Box",desc:"Chocolate bar bulk box.",img:"w25.jpg"},
+{name:"Center fruit (full jar)",cat:"wholesale",mrp:225,price:202,qty:"Jar",desc:"Fruit gum jar pack.",img:"w26.jpg"}
+
 ]
 
-function toggleMenu(){
-sidebar.style.left=sidebar.style.left=="0px"?"-220px":"0px"
-}
+function toggleMenu(){sidebar.style.left=sidebar.style.left=="0px"?"-220px":"0px"}
 
-function show(p){
-document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"))
-p.classList.add("active")
-}
+function show(p){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));p.classList.add("active")}
 
-function goHome(){
-toggleMenu()
-show(home)
-}
+function goHome(){toggleMenu();show(home)}
 
 function loadHome(){
 homeProducts.innerHTML=""
-data.filter(p=>p.cat!="wholesale")
-.forEach(p=>homeProducts.innerHTML+=card(p))
+data.filter(p=>p.cat!="wholesale").forEach(p=>homeProducts.innerHTML+=card(p))
 }
 loadHome()
 
@@ -174,9 +157,15 @@ return `<div class="card" onclick="openDetail('${p.name}')">
 </div>`
 }
 
+/* SEARCH */
+function search(q){
+homeProducts.innerHTML=""
+data.filter(p=>p.cat!="wholesale" && p.name.toLowerCase().includes(q.toLowerCase()))
+.forEach(p=>homeProducts.innerHTML+=card(p))
+}
+
 function openCategory(cat){
-toggleMenu()
-show(categoryPage)
+toggleMenu();show(categoryPage)
 let list=data.filter(p=>p.cat==cat)
 categoryProducts.innerHTML=""
 list.forEach(p=>categoryProducts.innerHTML+=card(p))
@@ -192,8 +181,7 @@ detailBox.innerHTML=`
 <p>${p.desc}</p>
 <p class="price">₹${p.mrp}</p>
 <h3>₹${p.price}</h3>
-<div class="size-box">${p.qty}</div>
-
+<p><b>Size:</b> ${p.qty}</p>
 <button onclick="buyNow('${p.name}',${p.price})">Buy Now</button>
 <button onclick="addCart('${p.name}')">Add to Cart</button>
 `
@@ -225,11 +213,7 @@ function checkout(){
 let n=name.value
 let a=address.value
 let msg="Order%0A"+n+"%0A"+a+"%0A"
-
-cart.forEach(p=>{
-msg+=p.name+" x"+p.qty+"%0A"
-})
-
+cart.forEach(p=>msg+=p.name+" x"+p.qty+"%0A")
 window.open(`https://wa.me/918638618446?text=${msg}`)
 }
 
