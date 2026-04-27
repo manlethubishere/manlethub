@@ -5,15 +5,15 @@
 <title>MANLET</title>
 
 <style>
-body{margin:0;font-family:Arial;background:#f9f9f9}
+body{margin:0;font-family:Arial;background:#fff;color:#000}
 
 /* SPLASH */
 #splash{
 position:fixed;width:100%;height:100%;
-background:white;display:flex;justify-content:center;align-items:center;
+background:#fff;display:flex;justify-content:center;align-items:center;
 z-index:999;
 }
-#logo{width:130px;animation:zoom 2.5s ease;}
+#logo{width:120px;animation:zoom 2s ease;}
 @keyframes zoom{
 0%{transform:scale(0.5);opacity:0}
 50%{transform:scale(1.2)}
@@ -23,60 +23,48 @@ z-index:999;
 /* HEADER */
 .header{
 display:flex;justify-content:space-between;align-items:center;
-padding:12px;background:white;border-bottom:1px solid #eee;
+padding:12px;background:#000;color:#fff;
 }
 
 /* SIDEBAR */
 .sidebar{
 position:fixed;left:-220px;top:0;width:200px;height:100%;
-background:#22c55e;color:white;transition:.3s;z-index:100;
+background:#000;color:#fff;transition:.3s;z-index:100;
 }
-.sidebar div{
-padding:14px;border-bottom:1px solid rgba(255,255,255,0.2);
-cursor:pointer;
-}
+.sidebar div{padding:14px;border-bottom:1px solid #333;cursor:pointer}
 
 /* PRODUCTS */
 .products{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:12px;
-padding:10px;
+display:grid;grid-template-columns:repeat(2,1fr);
+gap:12px;padding:10px;
 }
 .card{
-background:white;border-radius:12px;padding:10px;
-box-shadow:0 5px 15px rgba(0,0,0,0.08);
+background:#fff;border-radius:12px;padding:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 .card img{
-width:100%;
-height:130px;
-object-fit:contain;
-background:#fff;
-border-radius:10px;
+width:100%;height:130px;object-fit:contain;background:#fff;
 }
 
 /* DETAIL */
 .detail-img{
-width:100%;
-height:250px;
-object-fit:contain;
-background:#fff;
-border-radius:12px;
+width:100%;height:250px;object-fit:contain;background:#fff;
 }
 
 /* TEXT */
 .price{text-decoration:line-through;color:gray}
-.discount{color:#22c55e}
+.discount{color:#000;font-weight:bold}
 
-/* SIZE BOX */
+/* SIZE */
 .size-box{
-display:inline-block;
-padding:10px 18px;
-border-radius:10px;
-border:2px solid #22c55e;
-background:#22c55e;
-color:white;
-margin:10px 0;
+padding:10px;border:2px solid #000;
+display:inline-block;margin:10px 0;
+}
+
+/* BUTTON */
+button{
+width:100%;padding:10px;margin-top:10px;
+background:#000;color:#fff;border:none;border-radius:6px;
 }
 
 /* PAGE */
@@ -85,10 +73,8 @@ margin:10px 0;
 
 .back{padding:10px;font-weight:bold;cursor:pointer}
 
-button{
-width:100%;padding:10px;margin-top:10px;
-background:#22c55e;color:white;border:none;border-radius:8px;
-}
+/* CART */
+.cart-item{border-bottom:1px solid #ddd;padding:10px}
 </style>
 </head>
 
@@ -98,15 +84,15 @@ background:#22c55e;color:white;border:none;border-radius:8px;
 
 <div class="sidebar" id="sidebar">
 <div onclick="goHome()">Home</div>
-<div onclick="openCategory('perfume')">Perfumes</div>
 <div onclick="openCategory('beauty')">Beauty</div>
+<div onclick="openCategory('perfume')">Perfumes</div>
 <div onclick="openCategory('wholesale')">Wholesale</div>
 </div>
 
 <div class="header">
 <div onclick="toggleMenu()">☰</div>
 <b>MANLET</b>
-<div>🛒</div>
+<div onclick="openCart()">🛒</div>
 </div>
 
 <!-- HOME -->
@@ -126,61 +112,49 @@ background:#22c55e;color:white;border:none;border-radius:8px;
 <div id="detailBox"></div>
 </div>
 
+<!-- CART -->
+<div id="cartPage" class="page">
+<div class="back" onclick="goBack()">⬅ Back</div>
+
+<input id="name" placeholder="Name" style="width:90%;margin:10px;padding:10px">
+<input id="address" placeholder="Address" style="width:90%;margin:10px;padding:10px">
+
+<div id="cartItems"></div>
+<h3 id="total"></h3>
+
+<button onclick="checkout()">Buy Now</button>
+</div>
+
 <script>
 
-setTimeout(()=>splash.style.display="none",2500)
+setTimeout(()=>splash.style.display="none",2000)
+
+let cart=[]
 
 const data=[
+{name:"Jasmine Hair Oil",cat:"beauty",mrp:425,price:297,disc:"30%",qty:"250ml",desc:"Hair nourishment oil",img:"oil.jpg"},
+{name:"Lotus Sunscreen",cat:"beauty",mrp:240,price:204,disc:"15%",qty:"100g",desc:"UV protection sunscreen",img:"sunscreen.jpg"},
+{name:"Streax Serum",cat:"beauty",mrp:340,price:323,disc:"5%",qty:"100ml",desc:"Smooth hair serum",img:"serum.jpg"},
+{name:"Mamaearth Facewash",cat:"beauty",mrp:269,price:242,disc:"10%",qty:"150ml",desc:"Glow facewash",img:"facewash.jpg"},
+{name:"Axe Deodorant",cat:"perfume",mrp:499,price:280,disc:"30%",qty:"150ml",desc:"Long lasting deodorant",img:"axe.jpg"},
 
-// NORMAL PRODUCTS
-{name:"Jasmine Hair Oil",cat:"beauty",mrp:425,price:297,disc:"30%",qty:"250ml",img:"oil.jpg"},
-{name:"Lotus Sunscreen",cat:"beauty",mrp:240,price:204,disc:"15%",qty:"100g",img:"sunscreen.jpg"},
-{name:"Streax Serum",cat:"beauty",mrp:340,price:323,disc:"5%",qty:"100ml",img:"serum.jpg"},
-{name:"Mamaearth Facewash",cat:"beauty",mrp:269,price:242,disc:"10%",qty:"150ml",img:"facewash.jpg"},
-{name:"Axe Deodorant",cat:"perfume",mrp:499,price:280,disc:"30%",qty:"150ml",img:"axe.jpg"},
-
-// WHOLESALE PRODUCTS
-{name:"Triple choco(full box)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Box",img:"w1.jpg"},
-{name:"chokers(full box)",cat:"wholesale",mrp:150,price:130,disc:"14%",qty:"Box",img:"w2.jpg"},
-{name:"choco stick(full jar)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Jar",img:"w3.jpg"},
-{name:"milk n nut(full box)",cat:"wholesale",mrp:200,price:170,disc:"15%",qty:"Box",img:"w4.jpg"},
-{name:"FRU POP (full pack)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Pack",img:"w5.jpg"},
-{name:"America Cow(full box)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Box",img:"w6.jpg"},
-{name:"Dovana (full box)",cat:"wholesale",mrp:350,price:280,disc:"20%",qty:"Box",img:"w7.jpg"},
-{name:"Heartilo(full box)",cat:"wholesale",mrp:300,price:240,disc:"20%",qty:"Box",img:"w8.jpg"},
-{name:"GEMGZ (full box)",cat:"wholesale",mrp:120,price:120,disc:"20%",qty:"Box",img:"w9.jpg"},
-{name:"Makhan Malai (full box)",cat:"wholesale",mrp:200,price:160,disc:"20%",qty:"Box",img:"w10.jpg"},
-{name:"Eye Balls (full box)",cat:"wholesale",mrp:150,price:125,disc:"17%",qty:"Box",img:"w11.jpg"},
-{name:"Dragon mosquito incense stick (full box)",cat:"wholesale",mrp:120,price:72,disc:"40%",qty:"Box",img:"w12.jpg"},
-{name:"D LOVE (full pack)",cat:"wholesale",mrp:350,price:315,disc:"10%",qty:"Pack",img:"w13.jpg"},
-{name:"Fruit jellos (full box)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Box",img:"w14.jpg"},
-{name:"Bery bliss (fullbox)",cat:"wholesale",mrp:300,price:240,disc:"20%",qty:"Box",img:"w15.jpg"},
-{name:"Milk n nut(full jar)",cat:"wholesale",mrp:250,price:212,disc:"15%",qty:"Jar",img:"w16.jpg"},
-{name:"Kit-Kat (fullbox)",cat:"wholesale",mrp:250,price:200,disc:"20%",qty:"Box",img:"w17.jpg"},
-{name:"Magic Pan(full box)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Box",img:"w18.jpg"},
-{name:"Jelly(full box)",cat:"wholesale",mrp:120,price:115,disc:"8%",qty:"Box",img:"w19.jpg"},
-{name:"Badam chakki(full pack)",cat:"wholesale",mrp:60,price:42,disc:"30%",qty:"Pack",img:"w20.jpg"},
-{name:"king Kon(full jar)",cat:"wholesale",mrp:300,price:240,disc:"20%",qty:"Jar",img:"w21.jpg"},
-{name:"Caikes orange flavoured(full pack)",cat:"wholesale",mrp:300,price:240,disc:"20%",qty:"Pack",img:"w22.jpg"},
-{name:"PIK POK(full jar)",cat:"wholesale",mrp:240,price:168,disc:"30%",qty:"Jar",img:"w23.jpg"},
-{name:"Swiss roll (full pack)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Pack",img:"w24.jpg"},
-{name:"Choco bar(full box)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Box",img:"w25.jpg"},
-{name:"Center fruit (full jar)",cat:"wholesale",mrp:225,price:202,disc:"10%",qty:"Jar",img:"w26.jpg"}
+{name:"Triple choco(full box)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Box",desc:"Bulk chocolate box",img:"w1.jpg"},
+{name:"chokers(full box)",cat:"wholesale",mrp:150,price:130,disc:"14%",qty:"Box",desc:"Bulk chokers pack",img:"w2.jpg"},
+{name:"choco stick(full jar)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Jar",desc:"Chocolate sticks jar",img:"w3.jpg"}
 ]
 
 function toggleMenu(){
-sidebar.style.left = sidebar.style.left=="0px"?"-220px":"0px"
+sidebar.style.left=sidebar.style.left=="0px"?"-220px":"0px"
 }
 
-function showPage(p){
+function show(p){
 document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"))
 p.classList.add("active")
 }
 
 function goHome(){
 toggleMenu()
-showPage(home)
-history.pushState({}, "")
+show(home)
 }
 
 function loadHome(){
@@ -196,50 +170,78 @@ return `<div class="card" onclick="openDetail('${p.name}')">
 <h4>${p.name}</h4>
 <p>${p.qty}</p>
 <p class="price">₹${p.mrp}</p>
-<p>₹${p.price} <span class="discount">${p.disc}</span></p>
+<p>₹${p.price}</p>
 </div>`
 }
 
 function openCategory(cat){
 toggleMenu()
-showPage(categoryPage)
-
+show(categoryPage)
 let list=data.filter(p=>p.cat==cat)
-
 categoryProducts.innerHTML=""
 list.forEach(p=>categoryProducts.innerHTML+=card(p))
-
-history.pushState({}, "")
 }
 
 function openDetail(name){
-showPage(detailPage)
+show(detailPage)
 let p=data.find(x=>x.name==name)
 
 detailBox.innerHTML=`
 <img src="${p.img}" class="detail-img">
 <h2>${p.name}</h2>
+<p>${p.desc}</p>
 <p class="price">₹${p.mrp}</p>
 <h3>₹${p.price}</h3>
-<h4>Size:</h4>
 <div class="size-box">${p.qty}</div>
-<button onclick="buyNow('${p.name}',${p.price})">Buy Now</button>
-`
 
-history.pushState({}, "")
+<button onclick="buyNow('${p.name}',${p.price})">Buy Now</button>
+<button onclick="addCart('${p.name}')">Add to Cart</button>
+`
 }
 
-function goBack(){history.back()}
+function addCart(name){
+let item=cart.find(x=>x.name==name)
+if(item)item.qty++
+else cart.push({name,qty:1})
+alert("Added to cart")
+}
 
-window.onpopstate=()=>showPage(home)
+function openCart(){
+show(cartPage)
+cartItems.innerHTML=""
+let total=0
+
+cart.forEach(p=>{
+let d=data.find(x=>x.name==p.name)
+let sub=d.price*p.qty
+total+=sub
+cartItems.innerHTML+=`<div class="cart-item">${p.name} x${p.qty} = ₹${sub}</div>`
+})
+
+total.innerText="Total ₹"+total
+}
+
+function checkout(){
+let n=name.value
+let a=address.value
+let msg="Order%0A"+n+"%0A"+a+"%0A"
+
+cart.forEach(p=>{
+msg+=p.name+" x"+p.qty+"%0A"
+})
+
+window.open(`https://wa.me/918638618446?text=${msg}`)
+}
 
 function buyNow(name,price){
 let n=prompt("Name")
 let a=prompt("Address")
-if(!n||!a)return
 let msg=`Order%0A${name}%0A₹${price}%0A${n}%0A${a}`
 window.open(`https://wa.me/918638618446?text=${msg}`)
 }
+
+function goBack(){history.back()}
+window.onpopstate=()=>show(home)
 
 </script>
 
