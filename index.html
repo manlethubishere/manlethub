@@ -5,7 +5,7 @@
 <title>MANLET</title>
 
 <style>
-body{margin:0;font-family:Arial;background:#f9f9f9;padding-bottom:70px}
+body{margin:0;font-family:Arial;background:#f9f9f9}
 
 /* SPLASH */
 #splash{
@@ -13,21 +13,17 @@ position:fixed;width:100%;height:100%;
 background:white;display:flex;justify-content:center;align-items:center;
 z-index:999;
 }
-#logo{
-width:130px;
-animation:logoAnim 2.5s ease forwards;
-}
-@keyframes logoAnim{
-0%{opacity:0;transform:scale(0.5)}
-50%{opacity:1;transform:scale(1.2)}
-100%{transform:scale(0.8)}
+#logo{width:130px;animation:zoom 2.5s ease;}
+@keyframes zoom{
+0%{transform:scale(0.5);opacity:0}
+50%{transform:scale(1.2)}
+100%{transform:scale(1)}
 }
 
 /* HEADER */
 .header{
 display:flex;justify-content:space-between;align-items:center;
 padding:12px;background:white;border-bottom:1px solid #eee;
-position:sticky;top:0;z-index:10;
 }
 
 /* SIDEBAR */
@@ -50,72 +46,67 @@ padding:10px;
 .card{
 background:white;border-radius:12px;padding:10px;
 box-shadow:0 5px 15px rgba(0,0,0,0.08);
-cursor:pointer;
 }
 .card img{
 width:100%;
 height:130px;
-object-fit:cover;
+object-fit:contain;
+background:#fff;
 border-radius:10px;
 }
 
-/* TEXT */
-.price{ text-decoration:line-through;color:gray;font-size:12px }
-.discount{ color:#22c55e;font-weight:bold;font-size:12px }
-
-/* PAGE SYSTEM */
-.page{display:none;}
-.active{display:block;}
-
-.back{
-padding:10px;
-font-weight:bold;
-cursor:pointer;
-}
-
-/* BUTTON */
-button{
+/* DETAIL */
+.detail-img{
 width:100%;
-padding:10px;
-margin-top:10px;
-border:none;
-background:#22c55e;
-color:white;
-border-radius:8px;
+height:250px;
+object-fit:contain;
+background:#fff;
+border-radius:12px;
 }
 
-/* FOOTER */
-.footer{
+/* TEXT */
+.price{text-decoration:line-through;color:gray}
+.discount{color:#22c55e}
+
+/* SIZE BOX */
+.size-box{
+display:inline-block;
+padding:10px 18px;
+border-radius:10px;
+border:2px solid #22c55e;
 background:#22c55e;
 color:white;
-padding:15px;
-text-align:center;
-margin-top:20px;
+margin:10px 0;
+}
+
+/* PAGE */
+.page{display:none}
+.active{display:block}
+
+.back{padding:10px;font-weight:bold;cursor:pointer}
+
+button{
+width:100%;padding:10px;margin-top:10px;
+background:#22c55e;color:white;border:none;border-radius:8px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- SPLASH -->
 <div id="splash"><img id="logo" src="logo.png"></div>
 
-<!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
+<div onclick="goHome()">Home</div>
 <div onclick="openCategory('perfume')">Perfumes</div>
-<div onclick="openCategory('grocery')">Grocery</div>
-<div onclick="openCategory('beverages')">Beverages</div>
-<div onclick="openCategory('namkeen')">Namkeen</div>
 <div onclick="openCategory('beauty')">Beauty</div>
-<div onclick="openCategory('fashion')">Fashion</div>
-<div onclick="openCategory('electronics')">Electronics</div>
+<div onclick="openCategory('wholesale')">Wholesale</div>
 </div>
 
-<!-- HEADER -->
 <div class="header">
 <div onclick="toggleMenu()">☰</div>
 <b>MANLET</b>
-<div onclick="goToCart()">🛒</div>
+<div>🛒</div>
 </div>
 
 <!-- HOME -->
@@ -135,164 +126,118 @@ margin-top:20px;
 <div id="detailBox"></div>
 </div>
 
-<!-- CART -->
-<div id="cartPage" class="page">
-<div class="back" onclick="goBack()">⬅ Back</div>
-
-<input id="custName" placeholder="Your Name" style="width:90%;margin:10px;padding:10px">
-<input id="custAddr" placeholder="Your Address" style="width:90%;margin:10px;padding:10px">
-
-<div id="cartItems"></div>
-<h3 id="total"></h3>
-
-<button onclick="checkout()">Buy Now</button>
-</div>
-
-<!-- FOOTER -->
-<div class="footer">
-<h3>Customer Service</h3>
-<p>+91 86386 18446</p>
-<p>+91 8822873317</p>
-<p>manlethub@gmail.com</p>
-</div>
-
 <script>
 
-/* SPLASH */
 setTimeout(()=>splash.style.display="none",2500)
 
-/* DATA */
 const data=[
-{name:"Jasmine Hair Oil",cat:"beauty",mrp:425,price:297,disc:"30%",img:"oil.jpg"},
-{name:"Lotus Sunscreen",cat:"beauty",mrp:240,price:204,disc:"15%",img:"sunscreen.jpg"},
-{name:"Streax Serum",cat:"beauty",mrp:340,price:323,disc:"5%",img:"serum.jpg"},
-{name:"Mamaearth Facewash",cat:"beauty",mrp:269,price:242,disc:"10%",img:"facewash.jpg"},
-{name:"Axe Deodorant",cat:"perfume",mrp:499,price:280,disc:"30%",img:"axe.jpg"}
+
+// NORMAL PRODUCTS
+{name:"Jasmine Hair Oil",cat:"beauty",mrp:425,price:297,disc:"30%",qty:"250ml",img:"oil.jpg"},
+{name:"Lotus Sunscreen",cat:"beauty",mrp:240,price:204,disc:"15%",qty:"100g",img:"sunscreen.jpg"},
+{name:"Streax Serum",cat:"beauty",mrp:340,price:323,disc:"5%",qty:"100ml",img:"serum.jpg"},
+{name:"Mamaearth Facewash",cat:"beauty",mrp:269,price:242,disc:"10%",qty:"150ml",img:"facewash.jpg"},
+{name:"Axe Deodorant",cat:"perfume",mrp:499,price:280,disc:"30%",qty:"150ml",img:"axe.jpg"},
+
+// WHOLESALE PRODUCTS
+{name:"Triple choco(full box)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Box",img:"w1.jpg"},
+{name:"chokers(full box)",cat:"wholesale",mrp:150,price:130,disc:"14%",qty:"Box",img:"w2.jpg"},
+{name:"choco stick(full jar)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Jar",img:"w3.jpg"},
+{name:"milk n nut(full box)",cat:"wholesale",mrp:200,price:170,disc:"15%",qty:"Box",img:"w4.jpg"},
+{name:"FRU POP (full pack)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Pack",img:"w5.jpg"},
+{name:"America Cow(full box)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Box",img:"w6.jpg"},
+{name:"Dovana (full box)",cat:"wholesale",mrp:350,price:280,disc:"20%",qty:"Box",img:"w7.jpg"},
+{name:"Heartilo(full box)",cat:"wholesale",mrp:300,price:240,disc:"20%",qty:"Box",img:"w8.jpg"},
+{name:"GEMGZ (full box)",cat:"wholesale",mrp:120,price:120,disc:"20%",qty:"Box",img:"w9.jpg"},
+{name:"Makhan Malai (full box)",cat:"wholesale",mrp:200,price:160,disc:"20%",qty:"Box",img:"w10.jpg"},
+{name:"Eye Balls (full box)",cat:"wholesale",mrp:150,price:125,disc:"17%",qty:"Box",img:"w11.jpg"},
+{name:"Dragon mosquito incense stick (full box)",cat:"wholesale",mrp:120,price:72,disc:"40%",qty:"Box",img:"w12.jpg"},
+{name:"D LOVE (full pack)",cat:"wholesale",mrp:350,price:315,disc:"10%",qty:"Pack",img:"w13.jpg"},
+{name:"Fruit jellos (full box)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Box",img:"w14.jpg"},
+{name:"Bery bliss (fullbox)",cat:"wholesale",mrp:300,price:240,disc:"20%",qty:"Box",img:"w15.jpg"},
+{name:"Milk n nut(full jar)",cat:"wholesale",mrp:250,price:212,disc:"15%",qty:"Jar",img:"w16.jpg"},
+{name:"Kit-Kat (fullbox)",cat:"wholesale",mrp:250,price:200,disc:"20%",qty:"Box",img:"w17.jpg"},
+{name:"Magic Pan(full box)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Box",img:"w18.jpg"},
+{name:"Jelly(full box)",cat:"wholesale",mrp:120,price:115,disc:"8%",qty:"Box",img:"w19.jpg"},
+{name:"Badam chakki(full pack)",cat:"wholesale",mrp:60,price:42,disc:"30%",qty:"Pack",img:"w20.jpg"},
+{name:"king Kon(full jar)",cat:"wholesale",mrp:300,price:240,disc:"20%",qty:"Jar",img:"w21.jpg"},
+{name:"Caikes orange flavoured(full pack)",cat:"wholesale",mrp:300,price:240,disc:"20%",qty:"Pack",img:"w22.jpg"},
+{name:"PIK POK(full jar)",cat:"wholesale",mrp:240,price:168,disc:"30%",qty:"Jar",img:"w23.jpg"},
+{name:"Swiss roll (full pack)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Pack",img:"w24.jpg"},
+{name:"Choco bar(full box)",cat:"wholesale",mrp:150,price:120,disc:"20%",qty:"Box",img:"w25.jpg"},
+{name:"Center fruit (full jar)",cat:"wholesale",mrp:225,price:202,disc:"10%",qty:"Jar",img:"w26.jpg"}
 ]
 
-let cart=[]
-
-/* SIDEBAR */
 function toggleMenu(){
-sidebar.style.left = sidebar.style.left=="0px" ? "-220px" : "0px"
+sidebar.style.left = sidebar.style.left=="0px"?"-220px":"0px"
 }
 
-/* PAGE SWITCH */
-function showPage(page){
-document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
-page.classList.add("active")
+function showPage(p){
+document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"))
+p.classList.add("active")
 }
 
-/* HOME LOAD */
+function goHome(){
+toggleMenu()
+showPage(home)
+history.pushState({}, "")
+}
+
 function loadHome(){
 homeProducts.innerHTML=""
-data.forEach(p=>homeProducts.innerHTML+=cardHTML(p))
+data.filter(p=>p.cat!="wholesale")
+.forEach(p=>homeProducts.innerHTML+=card(p))
 }
 loadHome()
 
-/* CARD */
-function cardHTML(p){
-return `
-<div class="card" onclick="openDetail('${p.name}')">
+function card(p){
+return `<div class="card" onclick="openDetail('${p.name}')">
 <img src="${p.img}" onerror="this.src='logo.png'">
 <h4>${p.name}</h4>
+<p>${p.qty}</p>
 <p class="price">₹${p.mrp}</p>
 <p>₹${p.price} <span class="discount">${p.disc}</span></p>
 </div>`
 }
 
-/* CATEGORY */
 function openCategory(cat){
 toggleMenu()
 showPage(categoryPage)
 
 let list=data.filter(p=>p.cat==cat)
 
-if(list.length==0){
-categoryProducts.innerHTML="<p style='padding:10px'>No products available</p>"
-}else{
 categoryProducts.innerHTML=""
-list.forEach(p=>categoryProducts.innerHTML+=cardHTML(p))
+list.forEach(p=>categoryProducts.innerHTML+=card(p))
+
+history.pushState({}, "")
 }
 
-history.pushState({page:"category"},"")
-}
-
-/* DETAIL */
 function openDetail(name){
 showPage(detailPage)
-
 let p=data.find(x=>x.name==name)
 
 detailBox.innerHTML=`
-<img src="${p.img}" style="width:100%;height:200px;object-fit:cover">
+<img src="${p.img}" class="detail-img">
 <h2>${p.name}</h2>
 <p class="price">₹${p.mrp}</p>
 <h3>₹${p.price}</h3>
+<h4>Size:</h4>
+<div class="size-box">${p.qty}</div>
 <button onclick="buyNow('${p.name}',${p.price})">Buy Now</button>
-<button onclick="addToCart('${p.name}')">Add to Cart</button>
 `
 
-history.pushState({page:"detail"},"")
+history.pushState({}, "")
 }
 
-/* CART */
-function addToCart(name){
-let item=cart.find(x=>x.name==name)
-if(item)item.qty++
-else cart.push({name,qty:1})
-alert("Added to cart")
-}
+function goBack(){history.back()}
 
-function goToCart(){
-showPage(cartPage)
+window.onpopstate=()=>showPage(home)
 
-let total=0
-cartItems.innerHTML=""
-
-cart.forEach(p=>{
-let item=data.find(x=>x.name==p.name)
-let sub=item.price*p.qty
-total+=sub
-cartItems.innerHTML+=`<p>${p.name} x${p.qty} = ₹${sub}</p>`
-})
-
-totalText= "Total: ₹"+total
-total.innerText=totalText
-
-history.pushState({page:"cart"},"")
-}
-
-/* BACK */
-function goBack(){
-history.back()
-}
-
-window.onpopstate=function(){
-showPage(home)
-}
-
-/* WHATSAPP */
 function buyNow(name,price){
-let n=prompt("Enter Name")
-let a=prompt("Enter Address")
+let n=prompt("Name")
+let a=prompt("Address")
 if(!n||!a)return
-
-let msg=`🛒 MANLET ORDER%0AName:${n}%0AAddress:${a}%0AProduct:${name}%0A₹${price}`
-window.open(`https://wa.me/918638618446?text=${msg}`)
-}
-
-function checkout(){
-let n=custName.value
-let a=custAddr.value
-if(!n||!a)return
-
-let msg=`🛒 MANLET ORDER%0AName:${n}%0AAddress:${a}%0A`
-
-cart.forEach(p=>{
-msg+=`${p.name} x${p.qty}%0A`
-})
-
+let msg=`Order%0A${name}%0A₹${price}%0A${n}%0A${a}`
 window.open(`https://wa.me/918638618446?text=${msg}`)
 }
 
