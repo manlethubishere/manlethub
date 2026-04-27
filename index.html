@@ -95,7 +95,45 @@ button{width:100%;padding:10px;margin-top:10px;background:#000;color:#fff;border
 setTimeout(()=>splash.style.display="none",2000)
 
 let cart=[]
+let currentPage="home"
 
+/* NAVIGATION SYSTEM */
+function show(page){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
+page.classList.add("active")
+}
+
+function navigate(pageName,pageEl){
+history.pushState({page:pageName},"")
+currentPage=pageName
+show(pageEl)
+}
+
+window.onpopstate=function(e){
+if(e.state){
+let p=e.state.page
+if(p=="home") show(home)
+if(p=="category") show(categoryPage)
+if(p=="detail") show(detailPage)
+if(p=="cart") show(cartPage)
+}else{
+show(home)
+}
+}
+
+function goBack(){history.back()}
+
+/* MENU */
+function toggleMenu(){
+sidebar.style.left=sidebar.style.left=="0px"?"-220px":"0px"
+}
+
+function goHome(){
+toggleMenu()
+navigate("home",home)
+}
+
+/* DATA (UNCHANGED FULL) */
 const data=[
 
 // NORMAL
@@ -105,7 +143,7 @@ const data=[
 {name:"Mama earth turmeric&saffron facewash",cat:"beauty",mrp:269,price:242,qty:"150ml",desc:"Brightens and cleans skin deeply.",img:"facewash.jpg"},
 {name:"Axe deodrant",cat:"perfume",mrp:499,price:280,qty:"150ml",desc:"Long lasting fragrance for daily use.",img:"axe.jpg"},
 
-// ALL 26 WHOLESALE
+// ALL 26 WHOLESALE (UNCHANGED)
 {name:"Triple choco(full box)",cat:"wholesale",mrp:150,price:120,qty:"Box",desc:"Bulk chocolate box for resale.",img:"w1.jpg"},
 {name:"chokers(full box)",cat:"wholesale",mrp:150,price:130,qty:"Box",desc:"Popular chokers candy box.",img:"w2.jpg"},
 {name:"choco stick(full jar)",cat:"wholesale",mrp:150,price:120,qty:"Jar",desc:"Chocolate sticks jar pack.",img:"w3.jpg"},
@@ -135,12 +173,7 @@ const data=[
 
 ]
 
-function toggleMenu(){sidebar.style.left=sidebar.style.left=="0px"?"-220px":"0px"}
-
-function show(p){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));p.classList.add("active")}
-
-function goHome(){toggleMenu();show(home)}
-
+/* HOME LOAD */
 function loadHome(){
 homeProducts.innerHTML=""
 data.filter(p=>p.cat!="wholesale").forEach(p=>homeProducts.innerHTML+=card(p))
@@ -164,15 +197,20 @@ data.filter(p=>p.cat!="wholesale" && p.name.toLowerCase().includes(q.toLowerCase
 .forEach(p=>homeProducts.innerHTML+=card(p))
 }
 
+/* CATEGORY */
 function openCategory(cat){
-toggleMenu();show(categoryPage)
+toggleMenu()
+navigate("category",categoryPage)
+
 let list=data.filter(p=>p.cat==cat)
 categoryProducts.innerHTML=""
 list.forEach(p=>categoryProducts.innerHTML+=card(p))
 }
 
+/* DETAIL */
 function openDetail(name){
-show(detailPage)
+navigate("detail",detailPage)
+
 let p=data.find(x=>x.name==name)
 
 detailBox.innerHTML=`
@@ -182,11 +220,13 @@ detailBox.innerHTML=`
 <p class="price">₹${p.mrp}</p>
 <h3>₹${p.price}</h3>
 <p><b>Size:</b> ${p.qty}</p>
+
 <button onclick="buyNow('${p.name}',${p.price})">Buy Now</button>
 <button onclick="addCart('${p.name}')">Add to Cart</button>
 `
 }
 
+/* CART */
 function addCart(name){
 let item=cart.find(x=>x.name==name)
 if(item)item.qty++
@@ -195,7 +235,8 @@ alert("Added to cart")
 }
 
 function openCart(){
-show(cartPage)
+navigate("cart",cartPage)
+
 cartItems.innerHTML=""
 let total=0
 
@@ -209,11 +250,16 @@ cartItems.innerHTML+=`<div class="cart-item">${p.name} x${p.qty} = ₹${sub}</di
 total.innerText="Total ₹"+total
 }
 
+/* CHECKOUT */
 function checkout(){
 let n=name.value
 let a=address.value
 let msg="Order%0A"+n+"%0A"+a+"%0A"
-cart.forEach(p=>msg+=p.name+" x"+p.qty+"%0A")
+
+cart.forEach(p=>{
+msg+=p.name+" x"+p.qty+"%0A"
+})
+
 window.open(`https://wa.me/918638618446?text=${msg}`)
 }
 
@@ -223,9 +269,6 @@ let a=prompt("Address")
 let msg=`Order%0A${name}%0A₹${price}%0A${n}%0A${a}`
 window.open(`https://wa.me/918638618446?text=${msg}`)
 }
-
-function goBack(){history.back()}
-window.onpopstate=()=>show(home)
 
 </script>
 
