@@ -6,40 +6,102 @@
 <title>MANLET</title>
 
 <style>
-body{margin:0;font-family:Arial;background:#fff;color:#000}
-header{background:#000;color:#fff;padding:15px;text-align:center;position:sticky;top:0}
-.menu{position:absolute;left:15px;top:15px;font-size:22px;cursor:pointer}
+body{margin:0;font-family:sans-serif;background:#fff;color:#000;overflow-x:hidden}
+
+/* ENTRY ANIMATION */
+#entry{
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:#000;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
+#logo{
+font-size:40px;
+color:#fff;
+animation:glow 1s ease-in-out infinite alternate;
+}
+@keyframes glow{
+from{text-shadow:0 0 10px #fff}
+to{text-shadow:0 0 25px #0f0}
+}
+
+/* HEADER */
+header{
+background:#000;color:#fff;
+padding:15px;
+text-align:center;
+position:sticky;top:0
+}
+.menu{position:absolute;left:15px;top:15px;cursor:pointer}
 .cart{position:absolute;right:15px;top:15px}
 
+/* SIDEBAR */
 .sidebar{
-position:fixed;left:-250px;top:0;width:250px;height:100%;
-background:#000;color:#fff;padding:20px;transition:.3s;z-index:999
+position:fixed;
+left:-250px;
+top:0;
+width:250px;
+height:100%;
+background:#000;
+color:#fff;
+padding:20px;
+transition:.3s;
+z-index:999
 }
 .sidebar div{padding:10px;cursor:pointer}
 .sidebar.show{left:0}
 
-.container{padding:15px}
+/* CONTENT */
+.container{
+padding:10px;
+max-width:500px;
+margin:auto;
+}
+
 .product{
-border:1px solid #ddd;padding:10px;margin-bottom:10px;cursor:pointer
+border:1px solid #ddd;
+margin:10px 0;
+padding:10px;
+cursor:pointer;
 }
+
 .product img{
-width:100%;height:auto;object-fit:contain; /* FIX IMAGE CUT */
-background:#fff
+width:100%;
+height:auto;
+object-fit:contain;
+display:block;
+margin:auto;
 }
 
+/* BUTTON */
 button{
-padding:10px;width:100%;margin-top:5px;border:none;
-background:#000;color:#fff;cursor:pointer
+width:100%;
+padding:12px;
+margin-top:5px;
+border:none;
+background:#000;
+color:#fff;
+cursor:pointer;
 }
 
-.back{cursor:pointer;margin:10px 0;display:block}
+.back{margin:10px 0;cursor:pointer}
 
-input{width:100%;padding:10px;margin:10px 0}
-
+input{
+width:100%;
+padding:10px;
+margin-bottom:10px;
+}
 </style>
 </head>
 
 <body>
+
+<!-- ENTRY -->
+<div id="entry"><div id="logo">M</div></div>
 
 <header>
 <span class="menu" onclick="toggleMenu()">☰</span>
@@ -58,108 +120,125 @@ MANLET
 
 <script>
 
-let cart=[]
+// ENTRY ANIMATION
+setTimeout(()=>{
+document.getElementById("entry").style.display="none"
+},1500)
 
+// DATA (ALL PRODUCTS)
 const data=[
 
-// ===== BEAUTY =====
-{name:"Dabur gulabari face cleanser",cat:"beauty",price:80,mrp:99,qty:"100ml",desc:"Face cleanser",img:"gulabari.jpg"},
-{name:"Dove daily shine shampoo",cat:"beauty",price:233,mrp:246,qty:"180ml",desc:"Shampoo",img:"dove.jpg"},
+// BEAUTY (few shown, baki same format add kar diye hain)
+{name:"Dabur gulabari face cleanser",cat:"beauty",price:80,mrp:99,qty:"100ml",img:"gulabari.jpg"},
+{name:"Dove daily shine shampoo",cat:"beauty",price:233,mrp:246,qty:"180ml",img:"dove-shampoo.jpg"},
+{name:"Parachute Body lotion",cat:"beauty",price:297,mrp:425,qty:"400ml",img:"parachute-lotion.jpg"},
+{name:"Nihar hair oil",cat:"beauty",price:192,mrp:227,qty:"550ml",img:"nihar.jpg"},
+{name:"Vaseline deep moisture body lotion",cat:"beauty",price:334,mrp:515,qty:"400ml",img:"vaseline.jpg"},
+{name:"Plum green tea facewash",cat:"beauty",price:190,mrp:199,qty:"50ml",img:"plum-green.jpg"},
+{name:"Savlon bathing soap",cat:"beauty",price:45,mrp:54,qty:"125gm",img:"savlon.jpg"},
+{name:"Nivea natural glow underarm roller",cat:"beauty",price:200,mrp:250,qty:"50ml",img:"nivea.jpg"},
 
-// ===== PERFUME =====
-{name:"FOGG ABSOLUTE",cat:"perfume",price:254,mrp:299,qty:"150ml",desc:"Perfume",img:"fogg.jpg"},
+// PERFUME
+{name:"FOGG ABSOLUTE",cat:"perfume",price:254,mrp:299,qty:"150ml",img:"fogg.jpg"},
+{name:"AXE MYSTERIOUS",cat:"perfume",price:280,mrp:399,qty:"200ml",img:"axe-mys.jpg"},
+{name:"AXE INTENSE",cat:"perfume",price:280,mrp:399,qty:"200ml",img:"axe-int.jpg"},
 
-// ===== WHOLESALE (ALL 26) =====
-{name:"Triple choco(full box)",cat:"wholesale",price:120,mrp:150,qty:"Full Box",desc:"Chocolate box",img:"w1.jpg"},
-{name:"chokers(full box)",cat:"wholesale",price:130,mrp:150,qty:"Full Box",desc:"Snack",img:"w2.jpg"},
-{name:"choco stick(full jar)",cat:"wholesale",price:120,mrp:150,qty:"Full Jar",desc:"Chocolate",img:"w3.jpg"},
-{name:"milk n nut(full box)",cat:"wholesale",price:170,mrp:200,qty:"Full Box",desc:"Chocolate",img:"w4.jpg"},
-{name:"FRU POP (full pack)",cat:"wholesale",price:120,mrp:150,qty:"Full Pack",desc:"Candy",img:"w5.jpg"},
-{name:"America Cow(full box)",cat:"wholesale",price:120,mrp:150,qty:"Full Box",desc:"Candy",img:"w6.jpg"},
-{name:"Dovana (full box)",cat:"wholesale",price:280,mrp:350,qty:"Full Box",desc:"Snack",img:"w7.jpg"},
-{name:"Heartilo(full box)",cat:"wholesale",price:240,mrp:300,qty:"Full Box",desc:"Snack",img:"w8.jpg"},
-{name:"GEMGZ (full box)",cat:"wholesale",price:120,mrp:120,qty:"Full Box",desc:"Candy",img:"w9.jpg"},
-{name:"Makhan Malai (full box)",cat:"wholesale",price:160,mrp:200,qty:"Full Box",desc:"Sweet",img:"w10.jpg"},
-{name:"Eye Balls (full box)",cat:"wholesale",price:125,mrp:150,qty:"Full Box",desc:"Candy",img:"w11.jpg"},
-{name:"Dragon mosquito incense stick (full box)",cat:"wholesale",price:72,mrp:120,qty:"Full Box",desc:"Mosquito stick",img:"w12.jpg"},
-{name:"D LOVE (full pack)",cat:"wholesale",price:315,mrp:350,qty:"Full Pack",desc:"Chocolate",img:"w13.jpg"},
-{name:"Fruit jellos (full box)",cat:"wholesale",price:120,mrp:150,qty:"Full Box",desc:"Jelly",img:"w14.jpg"},
-{name:"Bery bliss (fullbox)",cat:"wholesale",price:240,mrp:300,qty:"Full Box",desc:"Candy",img:"w15.jpg"},
-{name:"Milk n nut(full jar)",cat:"wholesale",price:212,mrp:250,qty:"Full Jar",desc:"Chocolate",img:"w16.jpg"},
-{name:"Kit-Kat (fullbox)",cat:"wholesale",price:200,mrp:250,qty:"Full Box",desc:"Chocolate",img:"w17.jpg"},
-{name:"Magic Pan(full box)",cat:"wholesale",price:120,mrp:150,qty:"Full Box",desc:"Snack",img:"w18.jpg"},
-{name:"Jelly(full box)",cat:"wholesale",price:115,mrp:120,qty:"Full Box",desc:"Jelly",img:"w19.jpg"},
-{name:"Badam chakki(full pack)",cat:"wholesale",price:42,mrp:60,qty:"Full Pack",desc:"Sweet",img:"w20.jpg"},
-{name:"king Kon(full jar)",cat:"wholesale",price:240,mrp:300,qty:"Full Jar",desc:"Candy",img:"w21.jpg"},
-{name:"Caikes orange flavoured(full pack)",cat:"wholesale",price:240,mrp:300,qty:"Full Pack",desc:"Cake",img:"w22.jpg"},
-{name:"PIK POK(full jar)",cat:"wholesale",price:168,mrp:240,qty:"Full Jar",desc:"Candy",img:"w23.jpg"},
-{name:"Swiss roll (full pack)",cat:"wholesale",price:120,mrp:150,qty:"Full Pack",desc:"Cake",img:"w24.jpg"},
-{name:"Choco bar(full box)",cat:"wholesale",price:120,mrp:150,qty:"Full Box",desc:"Chocolate",img:"w25.jpg"},
-{name:"Center fruit (full jar)",cat:"wholesale",price:202,mrp:225,qty:"Full Jar",desc:"Candy",img:"w26.jpg"}
+// WHOLESALE (ALL 26)
+{name:"Triple choco(full box)",cat:"wholesale",price:120,img:"w1.jpg"},
+{name:"chokers(full box)",cat:"wholesale",price:130,img:"w2.jpg"},
+{name:"choco stick(full jar)",cat:"wholesale",price:120,img:"w3.jpg"},
+{name:"milk n nut(full box)",cat:"wholesale",price:170,img:"w4.jpg"},
+{name:"FRU POP (full pack)",cat:"wholesale",price:120,img:"w5.jpg"},
+{name:"America Cow(full box)",cat:"wholesale",price:120,img:"w6.jpg"},
+{name:"Dovana (full box)",cat:"wholesale",price:280,img:"w7.jpg"},
+{name:"Heartilo(full box)",cat:"wholesale",price:240,img:"w8.jpg"},
+{name:"GEMGZ (full box)",cat:"wholesale",price:120,img:"w9.jpg"},
+{name:"Makhan Malai (full box)",cat:"wholesale",price:160,img:"w10.jpg"},
+{name:"Eye Balls (full box)",cat:"wholesale",price:125,img:"w11.jpg"},
+{name:"Dragon mosquito incense stick (full box)",cat:"wholesale",price:72,img:"w12.jpg"},
+{name:"D LOVE (full pack)",cat:"wholesale",price:315,img:"w13.jpg"},
+{name:"Fruit jellos (full box)",cat:"wholesale",price:120,img:"w14.jpg"},
+{name:"Bery bliss (fullbox)",cat:"wholesale",price:240,img:"w15.jpg"},
+{name:"Milk n nut(full jar)",cat:"wholesale",price:212,img:"w16.jpg"},
+{name:"Kit-Kat (fullbox)",cat:"wholesale",price:200,img:"w17.jpg"},
+{name:"Magic Pan(full box)",cat:"wholesale",price:120,img:"w18.jpg"},
+{name:"Jelly(full box)",cat:"wholesale",price:115,img:"w19.jpg"},
+{name:"Badam chakki(full pack)",cat:"wholesale",price:42,img:"w20.jpg"},
+{name:"king Kon(full jar)",cat:"wholesale",price:240,img:"w21.jpg"},
+{name:"Caikes orange flavoured(full pack)",cat:"wholesale",price:240,img:"w22.jpg"},
+{name:"PIK POK(full jar)",cat:"wholesale",price:168,img:"w23.jpg"},
+{name:"Swiss roll (full pack)",cat:"wholesale",price:120,img:"w24.jpg"},
+{name:"Choco bar(full box)",cat:"wholesale",price:120,img:"w25.jpg"},
+{name:"Center fruit (full jar)",cat:"wholesale",price:202,img:"w26.jpg"}
 
 ]
 
+// NAV
 function toggleMenu(){
-document.getElementById("sidebar").classList.toggle("show")
+sidebar.classList.toggle("show")
 }
 
 function goHome(){
 render(data)
+}
+
+function openCategory(c){
+render(data.filter(p=>p.cat==c))
 toggleMenu()
 }
 
-function openCategory(cat){
-const filtered=data.filter(p=>p.cat===cat)
-render(filtered)
-toggleMenu()
-}
-
+// RENDER
 function render(list){
 let html=`<input placeholder="Search..." oninput="search(this.value)">`
 list.forEach((p,i)=>{
 html+=`
-<div class="product" onclick="viewProduct(${i})">
+<div class="product" onclick="view(${i})">
 <img src="${p.img}">
 <h3>${p.name}</h3>
 <p>₹${p.price}</p>
 </div>`
 })
-document.getElementById("app").innerHTML=html
+app.innerHTML=html
 }
 
-function viewProduct(i){
-const p=data[i]
-document.getElementById("app").innerHTML=`
-<span class="back" onclick="goHome()">← Back</span>
+// VIEW
+function view(i){
+let p=data[i]
+app.innerHTML=`
+<div class="back" onclick="goHome()">← Back</div>
 <img src="${p.img}" style="width:100%;object-fit:contain">
 <h2>${p.name}</h2>
-<p>${p.qty}</p>
+<p>${p.qty||""}</p>
 <p>₹${p.price}</p>
-<button onclick="buyNow('${p.name}')">Buy Now</button>
-<button onclick="addCart('${p.name}')">Add to Cart</button>
+<button onclick="buy('${p.name}')">Buy Now</button>
+<button onclick="cartAdd('${p.name}')">Add to Cart</button>
 `
 history.pushState({},"","")
 }
 
+// BACK
 window.onpopstate=()=>goHome()
 
-function addCart(name){
-cart.push(name)
-alert("Added to cart")
-}
-
-function buyNow(name){
-let n=prompt("Enter Name")
-let a=prompt("Enter Address")
-let msg=`Order: ${name}%0AName: ${n}%0AAddress: ${a}`
-window.open(`https://wa.me/918638618446?text=${msg}`)
-}
-
+// SEARCH
 function search(q){
 q=q.toLowerCase()
 render(data.filter(p=>p.name.toLowerCase().includes(q)))
 }
 
+// CART
+function cartAdd(n){
+alert("Added to cart")
+}
+
+// BUY
+function buy(n){
+let name=prompt("Enter Name")
+let add=prompt("Enter Address")
+let msg=`Order: ${n}%0AName: ${name}%0AAddress: ${add}`
+window.open(`https://wa.me/918638618446?text=${msg}`)
+}
+
+// INIT
 render(data)
 
 </script>
