@@ -1,99 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MANLET</title>
 
 <style>
-body{margin:0;font-family:sans-serif;background:#fff;color:#000;overflow-x:hidden}
+body{
+margin:0;
+font-family:Arial;
+background:#fff;
+overflow-x:hidden;
+}
 
-/* ENTRY ANIMATION */
+/* ENTRY */
 #entry{
 position:fixed;
-top:0;left:0;
-width:100%;height:100%;
-background:#000;
+width:100%;
+height:100%;
+background:#fff;
 display:flex;
 justify-content:center;
 align-items:center;
 z-index:9999;
 }
-#logo{
-font-size:40px;
-color:#fff;
-animation:glow 1s ease-in-out infinite alternate;
+#entry img{
+width:120px;
+animation:zoom 1.5s ease;
 }
-@keyframes glow{
-from{text-shadow:0 0 10px #fff}
-to{text-shadow:0 0 25px #0f0}
+@keyframes zoom{
+0%{transform:scale(0.5);opacity:0}
+50%{transform:scale(1.2)}
+100%{transform:scale(1)}
 }
 
 /* HEADER */
 header{
-background:#000;color:#fff;
-padding:15px;
+background:#000;
+color:#fff;
+padding:12px;
 text-align:center;
-position:sticky;top:0
+position:sticky;
+top:0;
 }
-.menu{position:absolute;left:15px;top:15px;cursor:pointer}
-.cart{position:absolute;right:15px;top:15px}
+.menu{position:absolute;left:15px;top:12px;cursor:pointer}
+.cart{position:absolute;right:15px;top:12px}
 
 /* SIDEBAR */
 .sidebar{
 position:fixed;
-left:-250px;
+left:-220px;
 top:0;
-width:250px;
+width:220px;
 height:100%;
 background:#000;
 color:#fff;
-padding:20px;
 transition:.3s;
-z-index:999
+z-index:1000;
 }
-.sidebar div{padding:10px;cursor:pointer}
+.sidebar div{
+padding:14px;
+border-bottom:1px solid #333;
+cursor:pointer;
+}
 .sidebar.show{left:0}
 
-/* CONTENT */
+/* MAIN */
 .container{
-padding:10px;
 max-width:500px;
 margin:auto;
+padding:10px;
 }
 
+/* PRODUCT */
 .product{
 border:1px solid #ddd;
 margin:10px 0;
 padding:10px;
 cursor:pointer;
 }
-
 .product img{
 width:100%;
-height:auto;
+height:140px;
 object-fit:contain;
-display:block;
-margin:auto;
+background:#fff;
 }
 
 /* BUTTON */
 button{
 width:100%;
-padding:12px;
+padding:10px;
 margin-top:5px;
-border:none;
 background:#000;
 color:#fff;
-cursor:pointer;
+border:none;
 }
 
-.back{margin:10px 0;cursor:pointer}
-
+/* INPUT */
 input{
 width:100%;
 padding:10px;
-margin-bottom:10px;
+margin:10px 0;
+}
+
+/* BACK */
+.back{
+margin:10px 0;
+font-weight:bold;
+cursor:pointer;
 }
 </style>
 </head>
@@ -101,12 +114,14 @@ margin-bottom:10px;
 <body>
 
 <!-- ENTRY -->
-<div id="entry"><div id="logo">M</div></div>
+<div id="entry">
+<img src="logo.png">
+</div>
 
 <header>
 <span class="menu" onclick="toggleMenu()">☰</span>
 MANLET
-<span class="cart">🛒</span>
+<span class="cart" onclick="openCart()">🛒</span>
 </header>
 
 <div class="sidebar" id="sidebar">
@@ -120,28 +135,53 @@ MANLET
 
 <script>
 
-// ENTRY ANIMATION
+// ENTRY REMOVE
 setTimeout(()=>{
 document.getElementById("entry").style.display="none"
 },1500)
 
-// DATA (ALL PRODUCTS)
+// CART
+let cart=[]
+
+// DATA (FULL LIST)
 const data=[
 
-// BEAUTY (few shown, baki same format add kar diye hain)
-{name:"Dabur gulabari face cleanser",cat:"beauty",price:80,mrp:99,qty:"100ml",img:"gulabari.jpg"},
-{name:"Dove daily shine shampoo",cat:"beauty",price:233,mrp:246,qty:"180ml",img:"dove-shampoo.jpg"},
-{name:"Parachute Body lotion",cat:"beauty",price:297,mrp:425,qty:"400ml",img:"parachute-lotion.jpg"},
-{name:"Nihar hair oil",cat:"beauty",price:192,mrp:227,qty:"550ml",img:"nihar.jpg"},
-{name:"Vaseline deep moisture body lotion",cat:"beauty",price:334,mrp:515,qty:"400ml",img:"vaseline.jpg"},
-{name:"Plum green tea facewash",cat:"beauty",price:190,mrp:199,qty:"50ml",img:"plum-green.jpg"},
-{name:"Savlon bathing soap",cat:"beauty",price:45,mrp:54,qty:"125gm",img:"savlon.jpg"},
-{name:"Nivea natural glow underarm roller",cat:"beauty",price:200,mrp:250,qty:"50ml",img:"nivea.jpg"},
+// BEAUTY (ALL)
+{name:"Dabur gulabari face cleanser",cat:"beauty",mrp:99,price:80,qty:"100ml",img:"gulabari.jpg"},
+{name:"Dove daily shine shampoo",cat:"beauty",mrp:246,price:233,qty:"180ml",img:"dove-shampoo.jpg"},
+{name:"Parachute Body lotion",cat:"beauty",mrp:425,price:297,qty:"400ml",img:"parachute-lotion.jpg"},
+{name:"Parachute jasmine hair oil",cat:"beauty",mrp:425,price:318,qty:"500ml",img:"para-oil.jpg"},
+{name:"Nihar hair oil",cat:"beauty",mrp:227,price:192,qty:"550ml",img:"nihar.jpg"},
+{name:"Head & shoulder shampoo(with oxygenated charcol)",cat:"beauty",mrp:450,price:315,qty:"340ml",img:"hs.jpg"},
+{name:"Vaseline deep moisture body lotion",cat:"beauty",mrp:515,price:334,qty:"400ml",img:"vaseline.jpg"},
+{name:"Dabur amla hair oil",cat:"beauty",mrp:300,price:255,qty:"550ml",img:"amla.jpg"},
+{name:"Mama earth ubtan facewash",cat:"beauty",mrp:269,price:242,qty:"100ml",img:"ubtan.jpg"},
+{name:"Plum green tea facewash",cat:"beauty",mrp:199,price:190,qty:"50ml",img:"plum-green.jpg"},
+{name:"Plum niacinamide facewash",cat:"beauty",mrp:199,price:190,qty:"50ml",img:"plum-niacin.jpg"},
+{name:"Lotus vitamin c body lotion",cat:"beauty",mrp:625,price:437,qty:"560ml",img:"lotus-c.jpg"},
+{name:"Meghadoot neem alovera facewash",cat:"beauty",mrp:80,price:70,qty:"60ml",img:"megha.jpg"},
+{name:"Mamaearth rice dewy facewash",cat:"beauty",mrp:99,price:80,qty:"20ml",img:"rice.jpg"},
+{name:"Mama earth onion hair serum",cat:"beauty",mrp:299,price:154,qty:"100ml",img:"onion.jpg"},
+{name:"Streax hair serum 115ml",cat:"beauty",mrp:340,price:323,qty:"115ml",img:"streax115.jpg"},
+{name:"Dove conditioner",cat:"beauty",mrp:285,price:242,qty:"175ml",img:"dove-cond.jpg"},
+{name:"Ponds bright beauty facewash",cat:"beauty",mrp:475,price:380,qty:"200ml",img:"ponds.jpg"},
+{name:"Lotus safe sun body lotion SPF",cat:"beauty",mrp:345,price:310,qty:"250ml",img:"lotus-spf.jpg"},
+{name:"Earthcon vitamin c hair serum",cat:"beauty",mrp:149,price:126,qty:"100ml",img:"earthcon.jpg"},
+{name:"Elibliss vitamin c facewash",cat:"beauty",mrp:249,price:112,qty:"75ml",img:"elibliss.jpg"},
+{name:"Mama Earth vitamin c face cream",cat:"beauty",mrp:249,price:224,qty:"80ml",img:"cream.jpg"},
+{name:"Rexona deodrant powder",cat:"beauty",mrp:95,price:76,qty:"25ml",img:"rexona.jpg"},
+{name:"Nivea natural glow underarm roller",cat:"beauty",mrp:250,price:200,qty:"50ml",img:"nivea.jpg"},
+{name:"Lotus white glow Gel creme",cat:"beauty",mrp:190,price:171,qty:"25gm",img:"whiteglow.jpg"},
+{name:"Savlon bathing soap",cat:"beauty",mrp:54,price:45,qty:"125gm",img:"savlon.jpg"},
+{name:"LOREAL PARIS hair serum",cat:"beauty",mrp:229,price:183,qty:"40ml",img:"loreal.jpg"},
+{name:"Garnier bright complete booster serum",cat:"beauty",mrp:619,price:557,qty:"30ml",img:"garnier.jpg"},
+{name:"Lotus safe sun suncreen spf 50",cat:"beauty",mrp:240,price:204,qty:"30gm",img:"spf50.jpg"},
+{name:"Garnier bright complete vitamin c serum/Cream",cat:"beauty",mrp:249,price:224,qty:"45gm",img:"garnier2.jpg"},
 
-// PERFUME
-{name:"FOGG ABSOLUTE",cat:"perfume",price:254,mrp:299,qty:"150ml",img:"fogg.jpg"},
-{name:"AXE MYSTERIOUS",cat:"perfume",price:280,mrp:399,qty:"200ml",img:"axe-mys.jpg"},
-{name:"AXE INTENSE",cat:"perfume",price:280,mrp:399,qty:"200ml",img:"axe-int.jpg"},
+// PERFUME (ALL)
+{name:"FOGG ABSOLUTE",cat:"perfume",mrp:299,price:254,qty:"150ml",img:"fogg.jpg"},
+{name:"AXE MYSTERIOUS",cat:"perfume",mrp:399,price:280,qty:"200ml",img:"axe-mys.jpg"},
+{name:"AXE INTENSE",cat:"perfume",mrp:399,price:280,qty:"200ml",img:"axe-int.jpg"},
 
 // WHOLESALE (ALL 26)
 {name:"Triple choco(full box)",cat:"wholesale",price:120,img:"w1.jpg"},
@@ -170,18 +210,15 @@ const data=[
 {name:"Swiss roll (full pack)",cat:"wholesale",price:120,img:"w24.jpg"},
 {name:"Choco bar(full box)",cat:"wholesale",price:120,img:"w25.jpg"},
 {name:"Center fruit (full jar)",cat:"wholesale",price:202,img:"w26.jpg"}
-
 ]
 
 // NAV
 function toggleMenu(){
 sidebar.classList.toggle("show")
 }
-
 function goHome(){
 render(data)
 }
-
 function openCategory(c){
 render(data.filter(p=>p.cat==c))
 toggleMenu()
@@ -193,8 +230,9 @@ let html=`<input placeholder="Search..." oninput="search(this.value)">`
 list.forEach((p,i)=>{
 html+=`
 <div class="product" onclick="view(${i})">
-<img src="${p.img}">
+<img src="${p.img}" onerror="this.src='logo.png'">
 <h3>${p.name}</h3>
+<p>${p.qty||""}</p>
 <p>₹${p.price}</p>
 </div>`
 })
@@ -205,18 +243,19 @@ app.innerHTML=html
 function view(i){
 let p=data[i]
 app.innerHTML=`
-<div class="back" onclick="goHome()">← Back</div>
+<div class="back" onclick="goBack()">← Back</div>
 <img src="${p.img}" style="width:100%;object-fit:contain">
 <h2>${p.name}</h2>
 <p>${p.qty||""}</p>
 <p>₹${p.price}</p>
 <button onclick="buy('${p.name}')">Buy Now</button>
-<button onclick="cartAdd('${p.name}')">Add to Cart</button>
+<button onclick="addCart('${p.name}')">Add to Cart</button>
 `
-history.pushState({},"","")
+history.pushState({page:"detail"},"")
 }
 
 // BACK
+function goBack(){history.back()}
 window.onpopstate=()=>goHome()
 
 // SEARCH
@@ -226,8 +265,12 @@ render(data.filter(p=>p.name.toLowerCase().includes(q)))
 }
 
 // CART
-function cartAdd(n){
+function addCart(n){
+cart.push(n)
 alert("Added to cart")
+}
+function openCart(){
+alert("Cart feature basic hai abhi")
 }
 
 // BUY
