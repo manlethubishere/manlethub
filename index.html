@@ -6,289 +6,1219 @@
 <title>MANLET</title>
 
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial;background:#fff;color:#000;overflow-x:hidden}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:#fff;
+color:#000;
+overflow-x:hidden;
+}
 
 /* ENTRY */
 #entry{
-position:fixed;inset:0;background:#fff;display:flex;
-align-items:center;justify-content:center;z-index:9999
+position:fixed;
+inset:0;
+background:#fff;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:99999;
 }
-#entry img{width:120px;animation:zoom 1.4s ease}
-@keyframes zoom{
-0%{transform:scale(.6);opacity:0}
-60%{transform:scale(1.15)}
-100%{transform:scale(1);opacity:1}
+
+#entry img{
+width:130px;
+animation:myntra 1.7s ease;
+}
+
+@keyframes myntra{
+0%{
+opacity:0;
+transform:scale(.5);
+filter:drop-shadow(0 0 0px #00ff66);
+}
+50%{
+opacity:1;
+transform:scale(1.4);
+filter:drop-shadow(0 0 35px #00ff66);
+}
+100%{
+opacity:1;
+transform:scale(1);
+filter:drop-shadow(0 0 0px #00ff66);
+}
 }
 
 /* HEADER */
 header{
-position:sticky;top:0;background:#000;color:#fff;
-padding:12px;text-align:center;z-index:10
+position:sticky;
+top:0;
+background:#fff;
+padding:14px;
+display:flex;
+justify-content:center;
+align-items:center;
+border-bottom:1px solid #ddd;
+z-index:999;
 }
-.menu{position:absolute;left:12px;top:12px;cursor:pointer}
-.cartBtn{position:absolute;right:12px;top:12px;cursor:pointer}
+
+.logoText{
+font-size:22px;
+font-weight:bold;
+}
+
+.menuBtn{
+position:absolute;
+left:15px;
+font-size:24px;
+cursor:pointer;
+}
+
+.cartBtn{
+position:absolute;
+right:15px;
+font-size:22px;
+cursor:pointer;
+}
 
 /* SIDEBAR */
 .sidebar{
-position:fixed;left:-230px;top:0;width:230px;height:100%;
-background:#000;color:#fff;transition:.25s;z-index:20
+position:fixed;
+left:-260px;
+top:0;
+width:260px;
+height:100%;
+background:#fff;
+box-shadow:0 0 15px rgba(0,0,0,.2);
+transition:.3s;
+z-index:9999;
+padding-top:60px;
 }
-.sidebar.show{left:0}
-.sidebar .item{padding:14px;border-bottom:1px solid #333;cursor:pointer}
+
+.sidebar.show{
+left:0;
+}
+
+.sidebar div{
+padding:18px;
+border-bottom:1px solid #eee;
+font-size:17px;
+cursor:pointer;
+font-weight:bold;
+}
 
 /* MAIN */
-.container{max-width:520px;margin:auto;padding:10px}
+.container{
+max-width:520px;
+margin:auto;
+padding:12px;
+}
+
+/* SEARCH */
+.search{
+width:100%;
+padding:13px;
+border:none;
+background:#f3f3f3;
+border-radius:10px;
+margin-bottom:15px;
+font-size:15px;
+}
 
 /* PRODUCT */
-.product{border:1px solid #ddd;margin:10px 0;padding:10px;cursor:pointer}
-.product img{width:100%;height:150px;object-fit:contain;background:#fff}
-h3{margin:6px 0}
-.price{font-weight:bold}
+.product{
+background:#fff;
+border-radius:14px;
+overflow:hidden;
+margin-bottom:18px;
+box-shadow:0 2px 10px rgba(0,0,0,.08);
+cursor:pointer;
+}
 
-/* UI */
-button{width:100%;padding:10px;margin-top:6px;border:none;background:#000;color:#fff}
-input{width:100%;padding:10px;margin:6px 0}
-.back{margin:10px 0;font-weight:bold;cursor:pointer}
-.row{display:flex;gap:8px}
-.badge{font-size:12px;color:#666}
+.product img{
+width:100%;
+height:210px;
+object-fit:contain;
+background:#fff;
+}
+
+.productInfo{
+padding:12px;
+}
+
+.productName{
+font-size:16px;
+font-weight:bold;
+margin-bottom:5px;
+}
+
+.qty{
+font-size:13px;
+color:#666;
+margin-bottom:8px;
+}
+
+.priceBox{
+display:flex;
+align-items:center;
+gap:8px;
+flex-wrap:wrap;
+}
+
+.mrp{
+text-decoration:line-through;
+color:#777;
+font-size:14px;
+}
+
+.discount{
+color:#00a63e;
+font-weight:bold;
+font-size:14px;
+}
+
+.sale{
+font-size:22px;
+font-weight:bold;
+}
+
+/* DETAIL */
+.detailImg{
+width:100%;
+height:320px;
+object-fit:contain;
+background:#fff;
+}
+
+.detail{
+padding:10px;
+}
+
+.back{
+font-size:18px;
+font-weight:bold;
+margin-bottom:10px;
+cursor:pointer;
+}
+
+.btn{
+width:100%;
+padding:14px;
+border:none;
+border-radius:10px;
+font-size:16px;
+font-weight:bold;
+margin-top:10px;
+cursor:pointer;
+}
+
+.buy{
+background:#000;
+color:#fff;
+}
+
+.cart{
+background:#00a63e;
+color:#fff;
+}
+
+/* CART */
+.cartItem{
+display:flex;
+justify-content:space-between;
+padding:12px 0;
+border-bottom:1px solid #eee;
+}
+
+/* FORM */
+.input{
+width:100%;
+padding:13px;
+border:1px solid #ddd;
+border-radius:10px;
+margin-top:12px;
+}
+
+.checkoutBtn{
+background:#000;
+color:#fff;
+margin-top:15px;
+}
+
+.empty{
+text-align:center;
+padding:40px;
+color:#777;
+font-size:18px;
+}
 </style>
 </head>
 
 <body>
 
-<!-- ENTRY (logo.png rakhna same folder me) -->
-<div id="entry"><img src="logo.png" onerror="this.style.display='none'"></div>
-
-<header>
-<span class="menu" onclick="toggleMenu()">☰</span>
-MANLET
-<span class="cartBtn" onclick="openCart()">🛒</span>
-</header>
-
-<div class="sidebar" id="sidebar">
-<div class="item" onclick="goHome()">Home</div>
-<div class="item" onclick="openCategory('beauty')">Beauty</div>
-<div class="item" onclick="openCategory('perfume')">Perfume</div>
-<div class="item" onclick="openCategory('wholesale')">Wholesale</div>
+<!-- ENTRY -->
+<div id="entry">
+<img src="logo.png">
 </div>
 
+<!-- HEADER -->
+<header>
+<div class="menuBtn" onclick="toggleSidebar()">☰</div>
+<div class="logoText">MANLET</div>
+<div class="cartBtn" onclick="openCart()">🛒</div>
+</header>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+<div onclick="goHome()">🏠 Home</div>
+<div onclick="openCategory('beauty')">✨ Beauty</div>
+<div onclick="openCategory('perfume')">🌸 Perfume</div>
+<div onclick="openCategory('wholesale')">📦 Wholesale</div>
+</div>
+
+<!-- APP -->
 <div class="container" id="app"></div>
 
 <script>
-// ===== ENTRY HIDE =====
-setTimeout(()=>{ document.getElementById('entry').style.display='none' },1400)
 
-// ===== STATE =====
+/* ENTRY */
+setTimeout(()=>{
+document.getElementById("entry").style.display="none"
+},1700)
+
+/* SIDEBAR */
+const sidebar=document.getElementById("sidebar")
+
+function toggleSidebar(){
+sidebar.classList.toggle("show")
+}
+
+function closeSidebar(){
+sidebar.classList.remove("show")
+}
+
+/* CART */
 let cart=[]
+
+/* CURRENT LIST */
 let currentList=[]
-let currentView='list' // list | product | cart | checkout
 
-// ===== DATA (ALL PRODUCTS) =====
-const data = [
-/* ===== BEAUTY (30) ===== */
-{name:"Dabur gulabari face cleanser",cat:"beauty",mrp:99,price:80,qty:"100ml",img:"gulabari.jpg"},
-{name:"Dove daily shine shampoo",cat:"beauty",mrp:246,price:233,qty:"180ml",img:"dove-shampoo.jpg"},
-{name:"Parachute Body lotion",cat:"beauty",mrp:425,price:297,qty:"400ml",img:"parachute-lotion.jpg"},
-{name:"Parachute jasmine hair oil",cat:"beauty",mrp:425,price:318,qty:"500ml",img:"para-oil.jpg"},
-{name:"Nihar hair oil",cat:"beauty",mrp:227,price:192,qty:"550ml",img:"nihar.jpg"},
-{name:"Head & shoulder shampoo(with oxygenated charcol)",cat:"beauty",mrp:450,price:315,qty:"340ml",img:"hs.jpg"},
-{name:"Vaseline deep moisture body lotion",cat:"beauty",mrp:515,price:334,qty:"400ml",img:"vaseline.jpg"},
-{name:"Dabur amla hair oil",cat:"beauty",mrp:300,price:255,qty:"550ml",img:"amla.jpg"},
-{name:"Mama earth ubtan facewash",cat:"beauty",mrp:269,price:242,qty:"100ml",img:"ubtan.jpg"},
-{name:"Plum green tea facewash",cat:"beauty",mrp:199,price:190,qty:"50ml",img:"plum-green.jpg"},
-{name:"Plum niacinamide facewash",cat:"beauty",mrp:199,price:190,qty:"50ml",img:"plum-niacin.jpg"},
-{name:"Lotus vitamin c body lotion",cat:"beauty",mrp:625,price:437,qty:"560ml",img:"lotus-c.jpg"},
-{name:"Meghadoot neem alovera facewash",cat:"beauty",mrp:80,price:70,qty:"60ml",img:"megha.jpg"},
-{name:"Mamaearth rice dewy facewash",cat:"beauty",mrp:99,price:80,qty:"20ml",img:"rice.jpg"},
-{name:"Mama earth onion hair serum",cat:"beauty",mrp:299,price:154,qty:"100ml",img:"onion.jpg"},
-{name:"Streax hair serum 115ml",cat:"beauty",mrp:340,price:323,qty:"115ml",img:"streax115.jpg"},
-{name:"Dove conditioner",cat:"beauty",mrp:285,price:242,qty:"175ml",img:"dove-cond.jpg"},
-{name:"Ponds bright beauty facewash",cat:"beauty",mrp:475,price:380,qty:"200ml",img:"ponds.jpg"},
-{name:"Lotus safe sun body lotion SPF",cat:"beauty",mrp:345,price:310,qty:"250ml",img:"lotus-spf.jpg"},
-{name:"Earthcon vitamin c hair serum",cat:"beauty",mrp:149,price:126,qty:"100ml",img:"earthcon.jpg"},
-{name:"Elibliss vitamin c facewash",cat:"beauty",mrp:249,price:112,qty:"75ml",img:"elibliss.jpg"},
-{name:"Mama Earth vitamin c face cream",cat:"beauty",mrp:249,price:224,qty:"80ml",img:"cream.jpg"},
-{name:"Rexona deodrant powder",cat:"beauty",mrp:95,price:76,qty:"25ml",img:"rexona.jpg"},
-{name:"Nivea natural glow underarm roller",cat:"beauty",mrp:250,price:200,qty:"50ml",img:"nivea.jpg"},
-{name:"Lotus white glow Gel creme",cat:"beauty",mrp:190,price:171,qty:"25gm",img:"whiteglow.jpg"},
-{name:"Savlon bathing soap",cat:"beauty",mrp:54,price:45,qty:"125gm",img:"savlon.jpg"},
-{name:"LOREAL PARIS hair serum",cat:"beauty",mrp:229,price:183,qty:"40ml",img:"loreal.jpg"},
-{name:"Garnier bright complete booster serum",cat:"beauty",mrp:619,price:557,qty:"30ml",img:"garnier.jpg"},
-{name:"Lotus safe sun suncreen spf 50",cat:"beauty",mrp:240,price:204,qty:"30gm",img:"spf50.jpg"},
-{name:"Garnier bright complete vitamin c serum/Cream",cat:"beauty",mrp:249,price:224,qty:"45gm",img:"garnier2.jpg"},
+/* PRODUCTS */
+const data=[
 
-/* ===== PERFUME (3) ===== */
-{name:"FOGG ABSOLUTE",cat:"perfume",mrp:299,price:254,qty:"150ml",img:"fogg.jpg"},
-{name:"AXE MYSTERIOUS",cat:"perfume",mrp:399,price:280,qty:"200ml",img:"axe-mys.jpg"},
-{name:"AXE INTENSE",cat:"perfume",mrp:399,price:280,qty:"200ml",img:"axe-int.jpg"},
+/* BEAUTY */
 
-/* ===== WHOLESALE (26) ===== */
-{name:"Triple choco(full box)",cat:"wholesale",price:120,qty:"Full Box",img:"w1.jpg"},
-{name:"chokers(full box)",cat:"wholesale",price:130,qty:"Full Box",img:"w2.jpg"},
-{name:"choco stick(full jar)",cat:"wholesale",price:120,qty:"Full Jar",img:"w3.jpg"},
-{name:"milk n nut(full box)",cat:"wholesale",price:170,qty:"Full Box",img:"w4.jpg"},
-{name:"FRU POP (full pack)",cat:"wholesale",price:120,qty:"Full Pack",img:"w5.jpg"},
-{name:"America Cow(full box)",cat:"wholesale",price:120,qty:"Full Box",img:"w6.jpg"},
-{name:"Dovana (full box)",cat:"wholesale",price:280,qty:"Full Box",img:"w7.jpg"},
-{name:"Heartilo(full box)",cat:"wholesale",price:240,qty:"Full Box",img:"w8.jpg"},
-{name:"GEMGZ (full box)",cat:"wholesale",price:120,qty:"Full Box",img:"w9.jpg"},
-{name:"Makhan Malai (full box)",cat:"wholesale",price:160,qty:"Full Box",img:"w10.jpg"},
-{name:"Eye Balls (full box)",cat:"wholesale",price:125,qty:"Full Box",img:"w11.jpg"},
-{name:"Dragon mosquito incense stick (full box)",cat:"wholesale",price:72,qty:"Full Box",img:"w12.jpg"},
-{name:"D LOVE (full pack)",cat:"wholesale",price:315,qty:"Full Pack",img:"w13.jpg"},
-{name:"Fruit jellos (full box)",cat:"wholesale",price:120,qty:"Full Box",img:"w14.jpg"},
-{name:"Bery bliss (fullbox)",cat:"wholesale",price:240,qty:"Full Box",img:"w15.jpg"},
-{name:"Milk n nut(full jar)",cat:"wholesale",price:212,qty:"Full Jar",img:"w16.jpg"},
-{name:"Kit-Kat (fullbox)",cat:"wholesale",price:200,qty:"Full Box",img:"w17.jpg"},
-{name:"Magic Pan(full box)",cat:"wholesale",price:120,qty:"Full Box",img:"w18.jpg"},
-{name:"Jelly(full box)",cat:"wholesale",price:115,qty:"Full Box",img:"w19.jpg"},
-{name:"Badam chakki(full pack)",cat:"wholesale",price:42,qty:"Full Pack",img:"w20.jpg"},
-{name:"king Kon(full jar)",cat:"wholesale",price:240,qty:"Full Jar",img:"w21.jpg"},
-{name:"Caikes orange flavoured(full pack)",cat:"wholesale",price:240,qty:"Full Pack",img:"w22.jpg"},
-{name:"PIK POK(full jar)",cat:"wholesale",price:168,qty:"Full Jar",img:"w23.jpg"},
-{name:"Swiss roll (full pack)",cat:"wholesale",price:120,qty:"Full Pack",img:"w24.jpg"},
-{name:"Choco bar(full box)",cat:"wholesale",price:120,qty:"Full Box",img:"w25.jpg"},
-{name:"Center fruit (full jar)",cat:"wholesale",price:202,qty:"Full Jar",img:"w26.jpg"}
+{
+name:"Dabur gulabari face cleanser",
+cat:"beauty",
+mrp:99,
+discount:"20% OFF",
+price:80,
+qty:"100ml",
+img:"gulabari.jpg"
+},
+
+{
+name:"Dove daily shine shampoo",
+cat:"beauty",
+mrp:246,
+discount:"5% OFF",
+price:233,
+qty:"180ml",
+img:"dove-shampoo.jpg"
+},
+
+{
+name:"Parachute Body lotion",
+cat:"beauty",
+mrp:425,
+discount:"30% OFF",
+price:297,
+qty:"400ml",
+img:"parachute-lotion.jpg"
+},
+
+{
+name:"Parachute jasmine hair oil",
+cat:"beauty",
+mrp:425,
+discount:"25% OFF",
+price:318,
+qty:"500ml",
+img:"para-oil.jpg"
+},
+
+{
+name:"Nihar hair oil",
+cat:"beauty",
+mrp:227,
+discount:"15% OFF",
+price:192,
+qty:"550ml",
+img:"nihar.jpg"
+},
+
+{
+name:"Head & shoulder shampoo(with oxygenated charcol)",
+cat:"beauty",
+mrp:450,
+discount:"30% OFF",
+price:315,
+qty:"340ml",
+img:"hs.jpg"
+},
+
+{
+name:"Vaseline deep moisture body lotion",
+cat:"beauty",
+mrp:515,
+discount:"35% OFF",
+price:334,
+qty:"400ml",
+img:"vaseline.jpg"
+},
+
+{
+name:"Dabur amla hair oil",
+cat:"beauty",
+mrp:300,
+discount:"15% OFF",
+price:255,
+qty:"550ml",
+img:"amla.jpg"
+},
+
+{
+name:"Mama earth ubtan facewash",
+cat:"beauty",
+mrp:269,
+discount:"10% OFF",
+price:242,
+qty:"100ml",
+img:"ubtan.jpg"
+},
+
+{
+name:"Plum green tea facewash",
+cat:"beauty",
+mrp:199,
+discount:"5% OFF",
+price:190,
+qty:"50ml",
+img:"plum-green.jpg"
+},
+
+{
+name:"Plum niacinamide facewash",
+cat:"beauty",
+mrp:199,
+discount:"5% OFF",
+price:190,
+qty:"50ml",
+img:"plum-niacin.jpg"
+},
+
+{
+name:"Lotus vitamin c body lotion",
+cat:"beauty",
+mrp:625,
+discount:"30% OFF",
+price:437,
+qty:"560ml",
+img:"lotus-c.jpg"
+},
+
+{
+name:"Meghadoot neem alovera facewash",
+cat:"beauty",
+mrp:80,
+discount:"10% OFF",
+price:70,
+qty:"60ml",
+img:"megha.jpg"
+},
+
+{
+name:"Mamaearth rice dewy facewash",
+cat:"beauty",
+mrp:99,
+discount:"20% OFF",
+price:80,
+qty:"20ml",
+img:"rice.jpg"
+},
+
+{
+name:"Mama earth onion hair serum",
+cat:"beauty",
+mrp:299,
+discount:"15% OFF",
+price:154,
+qty:"100ml",
+img:"onion.jpg"
+},
+
+{
+name:"Streax hair serum 115ml",
+cat:"beauty",
+mrp:340,
+discount:"5% OFF",
+price:323,
+qty:"115ml",
+img:"streax115.jpg"
+},
+
+{
+name:"Dove conditioner",
+cat:"beauty",
+mrp:285,
+discount:"15% OFF",
+price:242,
+qty:"175ml",
+img:"dove-cond.jpg"
+},
+
+{
+name:"Ponds bright beauty facewash",
+cat:"beauty",
+mrp:475,
+discount:"20% OFF",
+price:380,
+qty:"200ml",
+img:"ponds.jpg"
+},
+
+{
+name:"Lotus safe sun body lotion SPF",
+cat:"beauty",
+mrp:345,
+discount:"10% OFF",
+price:310,
+qty:"250ml",
+img:"lotus-spf.jpg"
+},
+
+{
+name:"Earthcon vitamin c hair serum",
+cat:"beauty",
+mrp:149,
+discount:"15% OFF",
+price:126,
+qty:"100ml",
+img:"earthcon.jpg"
+},
+
+{
+name:"Elibliss vitamin c facewash",
+cat:"beauty",
+mrp:249,
+discount:"55% OFF",
+price:112,
+qty:"75ml",
+img:"elibliss.jpg"
+},
+
+{
+name:"Mama Earth vitamin c face cream",
+cat:"beauty",
+mrp:249,
+discount:"10% OFF",
+price:224,
+qty:"80ml",
+img:"cream.jpg"
+},
+
+{
+name:"Rexona deodrant powder",
+cat:"beauty",
+mrp:95,
+discount:"20% OFF",
+price:76,
+qty:"25ml",
+img:"rexona.jpg"
+},
+
+{
+name:"Nivea natural glow underarm roller",
+cat:"beauty",
+mrp:250,
+discount:"20% OFF",
+price:200,
+qty:"50ml",
+img:"nivea.jpg"
+},
+
+{
+name:"Lotus white glow Gel creme",
+cat:"beauty",
+mrp:190,
+discount:"10% OFF",
+price:171,
+qty:"25gm",
+img:"whiteglow.jpg"
+},
+
+{
+name:"Savlon bathing soap",
+cat:"beauty",
+mrp:54,
+discount:"15% OFF",
+price:45,
+qty:"125gm",
+img:"savlon.jpg"
+},
+
+{
+name:"LOREAL PARIS hair serum",
+cat:"beauty",
+mrp:229,
+discount:"20% OFF",
+price:183,
+qty:"40ml",
+img:"loreal.jpg"
+},
+
+{
+name:"Garnier bright complete booster serum",
+cat:"beauty",
+mrp:619,
+discount:"10% OFF",
+price:557,
+qty:"30ml",
+img:"garnier.jpg"
+},
+
+{
+name:"Lotus safe sun suncreen spf 50",
+cat:"beauty",
+mrp:240,
+discount:"15% OFF",
+price:204,
+qty:"30gm",
+img:"spf50.jpg"
+},
+
+{
+name:"Garnier bright complete vitamin c serum/Cream",
+cat:"beauty",
+mrp:249,
+discount:"10% OFF",
+price:224,
+qty:"45gm",
+img:"garnier2.jpg"
+},
+
+/* PERFUME */
+
+{
+name:"FOGG ABSOLUTE",
+cat:"perfume",
+mrp:299,
+discount:"15% OFF",
+price:254,
+qty:"150ml",
+img:"fogg.jpg"
+},
+
+{
+name:"AXE MYSTERIOUS",
+cat:"perfume",
+mrp:399,
+discount:"30% OFF",
+price:280,
+qty:"200ml",
+img:"axe-mys.jpg"
+},
+
+{
+name:"AXE INTENSE",
+cat:"perfume",
+mrp:399,
+discount:"30% OFF",
+price:280,
+qty:"200ml",
+img:"axe-int.jpg"
+},
+
+/* WHOLESALE */
+
+{
+name:"Triple choco(full box)",
+cat:"wholesale",
+mrp:150,
+discount:"20% OFF",
+price:120,
+qty:"Full Box",
+img:"w1.jpg"
+},
+
+{
+name:"chokers(full box)",
+cat:"wholesale",
+mrp:150,
+discount:"14% OFF",
+price:130,
+qty:"Full Box",
+img:"w2.jpg"
+},
+
+{
+name:"choco stick(full jar)",
+cat:"wholesale",
+mrp:150,
+discount:"20% OFF",
+price:120,
+qty:"Full Jar",
+img:"w3.jpg"
+},
+
+{
+name:"milk n nut(full box)",
+cat:"wholesale",
+mrp:200,
+discount:"15% OFF",
+price:170,
+qty:"Full Box",
+img:"w4.jpg"
+},
+
+{
+name:"FRU POP (full pack)",
+cat:"wholesale",
+mrp:150,
+discount:"20% OFF",
+price:120,
+qty:"Full Pack",
+img:"w5.jpg"
+},
+
+{
+name:"America Cow(full box)",
+cat:"wholesale",
+mrp:150,
+discount:"20% OFF",
+price:120,
+qty:"Full Box",
+img:"w6.jpg"
+},
+
+{
+name:"Dovana (full box)",
+cat:"wholesale",
+mrp:350,
+discount:"20% OFF",
+price:280,
+qty:"Full Box",
+img:"w7.jpg"
+},
+
+{
+name:"Heartilo(full box)",
+cat:"wholesale",
+mrp:300,
+discount:"20% OFF",
+price:240,
+qty:"Full Box",
+img:"w8.jpg"
+},
+
+{
+name:"GEMGZ (full box)",
+cat:"wholesale",
+mrp:120,
+discount:"20% OFF",
+price:120,
+qty:"Full Box",
+img:"w9.jpg"
+},
+
+{
+name:"Makhan Malai (full box)",
+cat:"wholesale",
+mrp:200,
+discount:"20% OFF",
+price:160,
+qty:"Full Box",
+img:"w10.jpg"
+},
+
+{
+name:"Eye Balls (full box)",
+cat:"wholesale",
+mrp:150,
+discount:"17% OFF",
+price:125,
+qty:"Full Box",
+img:"w11.jpg"
+},
+
+{
+name:"Dragon mosquito incense stick (full box)",
+cat:"wholesale",
+mrp:120,
+discount:"40% OFF",
+price:72,
+qty:"Full Box",
+img:"w12.jpg"
+},
+
+{
+name:"D LOVE (full pack)",
+cat:"wholesale",
+mrp:350,
+discount:"10% OFF",
+price:315,
+qty:"Full Pack",
+img:"w13.jpg"
+},
+
+{
+name:"Fruit jellos (full box)",
+cat:"wholesale",
+mrp:150,
+discount:"20% OFF",
+price:120,
+qty:"Full Box",
+img:"w14.jpg"
+},
+
+{
+name:"Bery bliss (fullbox)",
+cat:"wholesale",
+mrp:300,
+discount:"20% OFF",
+price:240,
+qty:"Full Box",
+img:"w15.jpg"
+},
+
+{
+name:"Milk n nut(full jar)",
+cat:"wholesale",
+mrp:250,
+discount:"15% OFF",
+price:212,
+qty:"Full Jar",
+img:"w16.jpg"
+},
+
+{
+name:"Kit-Kat (fullbox)",
+cat:"wholesale",
+mrp:250,
+discount:"20% OFF",
+price:200,
+qty:"Full Box",
+img:"w17.jpg"
+},
+
+{
+name:"Magic Pan(full box)",
+cat:"wholesale",
+mrp:150,
+discount:"20% OFF",
+price:120,
+qty:"Full Box",
+img:"w18.jpg"
+},
+
+{
+name:"Jelly(full box)",
+cat:"wholesale",
+mrp:120,
+discount:"8% OFF",
+price:115,
+qty:"Full Box",
+img:"w19.jpg"
+},
+
+{
+name:"Badam chakki(full pack)",
+cat:"wholesale",
+mrp:60,
+discount:"30% OFF",
+price:42,
+qty:"Full Pack",
+img:"w20.jpg"
+},
+
+{
+name:"king Kon(full jar)",
+cat:"wholesale",
+mrp:300,
+discount:"20% OFF",
+price:240,
+qty:"Full Jar",
+img:"w21.jpg"
+},
+
+{
+name:"Caikes orange flavoured(full pack)",
+cat:"wholesale",
+mrp:300,
+discount:"20% OFF",
+price:240,
+qty:"Full Pack",
+img:"w22.jpg"
+},
+
+{
+name:"PIK POK(full jar)",
+cat:"wholesale",
+mrp:240,
+discount:"30% OFF",
+price:168,
+qty:"Full Jar",
+img:"w23.jpg"
+},
+
+{
+name:"Swiss roll (full pack)",
+cat:"wholesale",
+mrp:150,
+discount:"20% OFF",
+price:120,
+qty:"Full Pack",
+img:"w24.jpg"
+},
+
+{
+name:"Choco bar(full box)",
+cat:"wholesale",
+mrp:150,
+discount:"20% OFF",
+price:120,
+qty:"Full Box",
+img:"w25.jpg"
+},
+
+{
+name:"Center fruit (full jar)",
+cat:"wholesale",
+mrp:225,
+discount:"10% OFF",
+price:202,
+qty:"Full Jar",
+img:"w26.jpg"
+}
+
 ]
 
-// ===== NAV =====
-function toggleMenu(){ sidebar.classList.toggle('show') }
-function closeMenu(){ sidebar.classList.remove('show') }
-
+/* HOME */
 function goHome(){
 currentList=[...data]
-currentView='list'
-renderList(currentList)
-closeMenu()
-pushState('list')
+render(currentList)
+closeSidebar()
+history.pushState({page:"home"},"")
 }
 
+/* CATEGORY */
 function openCategory(cat){
 currentList=data.filter(p=>p.cat===cat)
-currentView='list'
-renderList(currentList)
-closeMenu()
-pushState('list')
+render(currentList)
+closeSidebar()
+history.pushState({page:"category"},"")
 }
 
-// ===== RENDER LIST =====
-function renderList(list){
-let html=`<input placeholder="Search..." oninput="search(this.value)">`
-list.forEach((p,i)=>{
+/* SEARCH */
+function search(q){
+q=q.toLowerCase()
+const filtered=currentList.filter(p=>
+p.name.toLowerCase().includes(q)
+)
+render(filtered,false)
+}
+
+/* RENDER */
+function render(list,showSearch=true){
+
+let html=""
+
+if(showSearch){
 html+=`
-<div class="product" onclick="viewProduct(${i})">
-<img src="${p.img}" onerror="this.src='logo.png'">
-<h3>${p.name}</h3>
-<div class="badge">${p.qty||''}</div>
-<div class="price">₹${p.price}</div>
-</div>`
-})
-app.innerHTML=html
-}
-
-// ===== VIEW PRODUCT =====
-function viewProduct(i){
-const p = currentList[i]
-currentView='product'
-app.innerHTML=`
-<div class="back" onclick="goBack()">← Back</div>
-<img src="${p.img}" style="width:100%;height:220px;object-fit:contain">
-<h2>${p.name}</h2>
-<p>${p.qty||''}</p>
-<p class="price">₹${p.price}</p>
-<button onclick='buyNow(${JSON.stringify(p)})'>Buy Now</button>
-<button onclick='addToCart(${JSON.stringify(p)})'>Add to Cart</button>
+<input 
+class="search"
+placeholder="Search products..."
+oninput="search(this.value)"
+>
 `
-pushState('product')
 }
 
-// ===== CART =====
-function addToCart(p){
-cart.push(p)
-alert('Added to cart')
+list.forEach((p,i)=>{
+
+html+=`
+<div class="product" onclick="openProduct(${data.indexOf(p)})">
+
+<img src="${p.img}" onerror="this.src='logo.png'">
+
+<div class="productInfo">
+
+<div class="productName">${p.name}</div>
+
+<div class="qty">${p.qty}</div>
+
+<div class="priceBox">
+
+<div class="mrp">
+₹${p.mrp}
+</div>
+
+<div class="discount">
+${p.discount}
+</div>
+
+</div>
+
+<div class="sale">
+₹${p.price}
+</div>
+
+</div>
+
+</div>
+`
+
+})
+
+app.innerHTML=html
+
+}
+
+/* PRODUCT DETAIL */
+function openProduct(i){
+
+const p=data[i]
+
+app.innerHTML=`
+
+<div class="back" onclick="history.back()">
+← Back
+</div>
+
+<img src="${p.img}" class="detailImg">
+
+<div class="detail">
+
+<h2>${p.name}</h2>
+
+<br>
+
+<div class="qty">${p.qty}</div>
+
+<br>
+
+<div class="priceBox">
+
+<div class="mrp">
+₹${p.mrp}
+</div>
+
+<div class="discount">
+${p.discount}
+</div>
+
+</div>
+
+<br>
+
+<div class="sale">
+₹${p.price}
+</div>
+
+<button class="btn buy" onclick="buyNow(${i})">
+Buy Now
+</button>
+
+<button class="btn cart" onclick="addToCart(${i})">
+Add To Cart
+</button>
+
+</div>
+`
+
+history.pushState({page:"product"},"")
+
+}
+
+/* CART */
+function addToCart(i){
+
+cart.push(data[i])
+
+alert("Added To Cart")
+
 }
 
 function openCart(){
-currentView='cart'
-let html=`<div class="back" onclick="goBack()">← Back</div><h2>Cart</h2>`
+
+let html=`
+<div class="back" onclick="history.back()">
+← Back
+</div>
+
+<h2>Shopping Cart</h2>
+
+<br>
+`
+
 if(cart.length===0){
-html+=`<p>Cart empty</p>`
+
+html+=`
+<div class="empty">
+Cart Is Empty
+</div>
+`
+
 }else{
-cart.forEach((p,idx)=>{
-html+=`<div class="row"><div style="flex:1">${p.name}</div><div>₹${p.price}</div></div>`
+
+cart.forEach((p,index)=>{
+
+html+=`
+
+<div class="cartItem">
+
+<div>
+${p.name}
+<br>
+₹${p.price}
+</div>
+
+<div>
+${p.qty}
+</div>
+
+</div>
+
+`
+
 })
-html+=`<button onclick="checkout()">Checkout</button>`
+
+html+=`
+
+<input 
+class="input"
+id="customerName"
+placeholder="Enter Your Name"
+>
+
+<input 
+class="input"
+id="customerAddress"
+placeholder="Enter Your Address"
+>
+
+<button class="btn checkoutBtn" onclick="checkout()">
+Place Order On WhatsApp
+</button>
+
+`
+
 }
+
 app.innerHTML=html
-pushState('cart')
+
+history.pushState({page:"cart"},"")
+
 }
 
-// ===== CHECKOUT =====
+/* CHECKOUT */
 function checkout(){
-currentView='checkout'
-app.innerHTML=`
-<div class="back" onclick="goBack()">← Back</div>
-<h2>Enter Details</h2>
-<input id="name" placeholder="Your Name">
-<input id="address" placeholder="Your Address">
-<button onclick="placeOrder()">Place Order</button>
-`
-pushState('checkout')
+
+const name=document.getElementById("customerName").value
+
+const address=document.getElementById("customerAddress").value
+
+let message=`🛒 MANLET ORDER %0A%0A`
+
+cart.forEach((p,index)=>{
+
+message+=`${index+1}. ${p.name} - ₹${p.price}%0A`
+
+})
+
+message+=`%0A👤 Name: ${name}%0A📍 Address: ${address}`
+
+window.open(
+`https://wa.me/918638618446?text=${message}`
+)
+
 }
 
-function placeOrder(){
-const n = document.getElementById('name').value || ''
-const a = document.getElementById('address').value || ''
-let msg="Order:%0A"
-cart.forEach(p=> msg += p.name + "%0A")
-msg += `Name: ${n}%0AAddress: ${a}`
-window.open(`https://wa.me/918638618446?text=${msg}`)
-}
+/* BUY NOW */
+function buyNow(i){
 
-// ===== BUY NOW (single item) =====
-function buyNow(p){
-currentView='checkout'
+const p=data[i]
+
 app.innerHTML=`
-<div class="back" onclick="goBack()">← Back</div>
+
+<div class="back" onclick="history.back()">
+← Back
+</div>
+
 <h2>${p.name}</h2>
-<input id="name" placeholder="Your Name">
-<input id="address" placeholder="Your Address">
-<button onclick='placeSingle(${JSON.stringify(p)})'>Place Order</button>
+
+<br>
+
+<input 
+class="input"
+id="buyName"
+placeholder="Enter Your Name"
+>
+
+<input 
+class="input"
+id="buyAddress"
+placeholder="Enter Your Address"
+>
+
+<button class="btn buy" onclick="finalBuy(${i})">
+Order On WhatsApp
+</button>
+
 `
-pushState('checkout')
+
+history.pushState({page:"buy"},"")
+
 }
 
-function placeSingle(p){
-const n = document.getElementById('name').value || ''
-const a = document.getElementById('address').value || ''
-let msg=`Order:%0A${p.name}%0AName: ${n}%0AAddress: ${a}`
-window.open(`https://wa.me/918638618446?text=${msg}`)
+function finalBuy(i){
+
+const p=data[i]
+
+const name=document.getElementById("buyName").value
+
+const address=document.getElementById("buyAddress").value
+
+const msg=`
+🛒 MANLET ORDER
+
+Product: ${p.name}
+Price: ₹${p.price}
+
+Name: ${name}
+Address: ${address}
+`
+
+window.open(
+`https://wa.me/918638618446?text=${encodeURIComponent(msg)}`
+)
+
 }
 
-// ===== SEARCH =====
-function search(q){
-q = q.toLowerCase()
-const list = data.filter(p=>p.name.toLowerCase().includes(q))
-currentList = list
-renderList(list)
+/* BACK */
+window.onpopstate=function(){
+
+render(currentList)
+
 }
 
-// ===== HISTORY =====
-function pushState(page){
-history.pushState({page},'')
-}
-
-function goBack(){ history.back() }
-
-window.onpopstate = ()=>{
-// always return to last list (home/category/search)
-renderList(currentList.length ? currentList : data)
-currentView='list'
-}
-
-// ===== INIT =====
+/* INIT */
 goHome()
+
 </script>
 
 </body>
